@@ -377,6 +377,11 @@ function SignupForm({ onSuccess }) {
             value={word}
             onChange={(e) => handleFieldChange('word', e.target.value)}
             aria-invalid={!!errors.word}
+            required
+            minLength={2}
+            maxLength={50}
+            pattern="[a-zA-Z\s]+"
+            title="Answer must contain only letters and spaces (1-2 words)"
           />
           {errors.word && <p className={styles.errorText}>{errors.word}</p>}
         </div>
@@ -389,6 +394,11 @@ function SignupForm({ onSuccess }) {
             value={name}
             onChange={(e) => handleFieldChange('name', e.target.value)}
             aria-invalid={!!errors.name}
+            required
+            minLength={4}
+            maxLength={50}
+            pattern="[a-zA-Z\s]+"
+            title="Name must be 4-50 characters with only letters and spaces"
           />
           {errors.name && <p className={styles.errorText}>{errors.name}</p>}
         </div>
@@ -401,6 +411,8 @@ function SignupForm({ onSuccess }) {
             value={email}
             onChange={(e) => handleFieldChange('email', e.target.value)}
             aria-invalid={!!errors.email}
+            required
+            maxLength={100}
           />
           {errors.email && <p className={styles.errorText}>{errors.email}</p>}
         </div>
