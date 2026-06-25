@@ -165,7 +165,7 @@
   font-weight: 600;
   color: var(--jasmine);
   margin-bottom: 40px;
-  text-align: center;
+  text-align: left;
 }
 
 .formGroup {
@@ -187,6 +187,7 @@
   color: var(--jasmine);
   font-weight: 500;
   letter-spacing: 0.3px;
+  text-align: left;
 }
 
 .input {
