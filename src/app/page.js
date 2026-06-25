@@ -26,33 +26,32 @@ function TaglineRotator() {
     const ctx = gsap.context(() => {
       const typeText = (index) => {
         const tagline = TAGLINES[index];
-        const words = tagline.split(' ');
-        el.innerHTML = `<h1 class="${styles.tagline}">${words.map(w => `<span class="${styles.taglineWord}">${w}</span>`).join(' ')}</h1>`;
-        const spans = el.querySelectorAll('span');
+        el.innerHTML = `<h1 class="${styles.tagline}">${tagline}</h1>`;
+        const heading = el.querySelector('h1');
 
         if (prefersReduced) {
-          spans.forEach(s => s.style.opacity = '1');
+          heading.style.opacity = '1';
           return;
         }
 
-        gsap.fromTo(spans,
+        gsap.fromTo(heading,
           { opacity: 0, y: 10 },
-          { opacity: 1, y: 0, stagger: 0.08, duration: 0.4, ease: 'power2.out' }
+          { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }
         );
       };
 
       typeText(0);
 
       const interval = setInterval(() => {
-        const spans = el.querySelectorAll('span');
+        const heading = el.querySelector('h1');
         if (prefersReduced) {
           indexRef.current = (indexRef.current + 1) % TAGLINES.length;
           typeText(indexRef.current);
           return;
         }
 
-        gsap.to(spans, {
-          opacity: 0, y: -10, stagger: 0.05, duration: 0.3, ease: 'power2.in',
+        gsap.to(heading, {
+          opacity: 0, y: -10, duration: 0.3, ease: 'power2.in',
           onComplete: () => {
             indexRef.current = (indexRef.current + 1) % TAGLINES.length;
             typeText(indexRef.current);

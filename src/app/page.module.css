@@ -30,11 +30,6 @@
   margin: 0;
 }
 
-.taglineWord {
-  display: inline-block;
-  padding: 0 4px;
-}
-
 .subtitle {
   font-family: var(--font-raleway);
   font-size: var(--text-lg);
