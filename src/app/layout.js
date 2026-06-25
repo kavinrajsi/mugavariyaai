@@ -41,8 +41,10 @@ export const metadata = {
     images: [
       {
         url: '/og-image.png',
+        secureUrl: '/og-image.png',
         width: 1200,
         height: 630,
+        type: 'image/png',
         alt: 'Mugavariyai - Home Awaits',
       },
     ],
@@ -51,7 +53,14 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Mugavariyai - Home Awaits',
     description: 'Every home has a story. We\'re getting ready to share ours.',
-    images: ['/og-image.png'],
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Mugavariyai - Home Awaits',
+      },
+    ],
   },
   other: {
     'color-scheme': 'light',

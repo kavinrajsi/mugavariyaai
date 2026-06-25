@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { ArrowDown, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
 import { TextPlugin } from 'gsap/TextPlugin';
 import styles from './page.module.css';
@@ -106,8 +106,21 @@ function CountdownTimer() {
 
   return (
     <div className={styles.countdownSection}>
-      <div className={styles.countdown} role="timer" aria-label={time ? `${time.days} days, ${time.hours} hours, ${time.minutes} minutes, ${time.seconds} seconds` : 'Loading countdown'}>
-        {time ? `${pad(time.days)} : ${pad(time.hours)} : ${pad(time.minutes)} : ${pad(time.seconds)}` : '— : — : — : —'}
+      <div className={styles.countdown} role="timer" aria-label={time ? `${time.days} days, ${time.hours} hours, ${time.minutes} minutes` : 'Loading countdown'}>
+        <div className={styles.countdownUnit}>
+          <span className={styles.countdownValue}>{time ? pad(time.days) : '—'}</span>
+          <span className={styles.countdownUnitLabel}>Date</span>
+        </div>
+        <span className={styles.countdownSeparator} aria-hidden="true">:</span>
+        <div className={styles.countdownUnit}>
+          <span className={styles.countdownValue}>{time ? pad(time.hours) : '—'}</span>
+          <span className={styles.countdownUnitLabel}>Hr</span>
+        </div>
+        <span className={styles.countdownSeparator} aria-hidden="true">:</span>
+        <div className={styles.countdownUnit}>
+          <span className={styles.countdownValue}>{time ? pad(time.minutes) : '—'}</span>
+          <span className={styles.countdownUnitLabel}>Min</span>
+        </div>
       </div>
       <p className={styles.countdownLabel}>Until the doors open</p>
     </div>
@@ -450,30 +463,25 @@ function SignupForm() {
 }
 
 export default function Home() {
-  const handleScroll = (e) => {
-    e.preventDefault();
-    document.querySelector(`.${styles.formSection}`)?.scrollIntoView({ behavior: 'smooth' });
-  };
 
   return (
-    <>
-      {/* Hero */}
-      <section className={styles.hero}>
-        <TaglineRotator />
-        <div className={styles.subtitle}>
-          Every home has a story.<br />
-          We&apos;re getting ready to share ours.
+    <section className={styles.hero}>
+      <div className={styles.container}>
+        {/* Text */}
+        <div className={styles.heroText}>
+          <TaglineRotator />
+          <div className={styles.subtitle}>
+            Every home has a story.<br />
+            We&apos;re getting ready to share ours.
+          </div>
+          <CountdownTimer />
         </div>
-        <CountdownTimer />
-        <button className={styles.ctaScroll} onClick={handleScroll}>
-          Join the journey <ArrowDown size={20} aria-hidden="true" />
-        </button>
-      </section>
 
-      {/* Form */}
-      <section className={styles.formSection}>
-        <SignupForm />
-      </section>
-    </>
+        {/* Form */}
+        <div className={styles.heroForm}>
+          <SignupForm />
+        </div>
+      </div>
+    </section>
   );
 }
