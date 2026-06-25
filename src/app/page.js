@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './page.module.css';
 
 const TAGLINES = [
@@ -12,80 +12,6 @@ const TAGLINES = [
   'ஒற்றுமையின் முகவரியாய்…',
   'மதுரையின் முகவரியாய்…',
 ];
-
-function KolamDivider() {
-  const kolamRef = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && kolamRef.current) {
-        const strokes = kolamRef.current.querySelectorAll(`.${styles.kolamStroke}`);
-        const dots = kolamRef.current.querySelectorAll(`.${styles.kolamDot}`);
-        strokes.forEach((stroke, i) => {
-          stroke.style.animationDelay = `${i * 0.15}s`;
-        });
-        dots.forEach((dot, i) => {
-          dot.style.animationDelay = `${i * 0.1}s`;
-        });
-      }
-    }, { threshold: 0.3 });
-
-    if (kolamRef.current) observer.observe(kolamRef.current);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <div className={styles.kolamContainer} ref={kolamRef}>
-      <svg
-        className={styles.kolamSvg}
-        viewBox="0 0 900 48"
-        preserveAspectRatio="none"
-      >
-        {/* Simple kolam pattern - repeating geometric diamond with dots */}
-        {[0, 1, 2, 3, 4, 5].map((i) => {
-          const x = i * 150 + 75;
-          return (
-            <g key={i}>
-              <line
-                className={styles.kolamStroke}
-                x1={x - 30}
-                y1="24"
-                x2={x}
-                y2="8"
-              />
-              <line
-                className={styles.kolamStroke}
-                x1={x}
-                y1="8"
-                x2={x + 30}
-                y2="24"
-              />
-              <line
-                className={styles.kolamStroke}
-                x1={x + 30}
-                y1="24"
-                x2={x}
-                y2="40"
-              />
-              <line
-                className={styles.kolamStroke}
-                x1={x}
-                y1="40"
-                x2={x - 30}
-                y2="24"
-              />
-              <circle className={styles.kolamDot} cx={x} cy="24" r="2.5" />
-              <circle className={styles.kolamDot} cx={x - 15} cy="16" r="1.5" />
-              <circle className={styles.kolamDot} cx={x + 15} cy="16" r="1.5" />
-              <circle className={styles.kolamDot} cx={x - 15} cy="32" r="1.5" />
-              <circle className={styles.kolamDot} cx={x + 15} cy="32" r="1.5" />
-            </g>
-          );
-        })}
-      </svg>
-    </div>
-  );
-}
 
 function CountdownTimer() {
   const [time, setTime] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
@@ -245,9 +171,6 @@ export default function Home() {
         </button>
         <CountdownTimer />
       </section>
-
-      {/* Divider */}
-      <KolamDivider />
 
       {/* Form */}
       <section className={styles.formSection}>
