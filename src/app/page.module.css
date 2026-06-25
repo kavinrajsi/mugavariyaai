@@ -26,7 +26,11 @@
   color: var(--jasmine);
   line-height: 1.1;
   position: absolute;
-  transition: opacity 0.6s ease-in-out;
+  will-change: transform, opacity;
+}
+
+.taglineWord {
+  display: inline-block;
 }
 
 .subtitle {

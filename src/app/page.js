@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import gsap from 'gsap';
 import styles from './page.module.css';
 
 const TAGLINES = [
@@ -12,6 +13,51 @@ const TAGLINES = [
   'ஒற்றுமையின் முகவரியாய்…',
   'மதுரையின் முகவரியாய்…',
 ];
+
+function TaglineRotator() {
+  const containerRef = useRef(null);
+  const indexRef = useRef(0);
+
+  useEffect(() => {
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const el = containerRef.current;
+    if (!el) return;
+
+    const ctx = gsap.context(() => {
+      const show = (index) => {
+        const tagline = TAGLINES[index];
+        const words = tagline.split(' ');
+        el.innerHTML = words.map(w => `<span class="${styles.taglineWord}">${w}</span>`).join(' ');
+        const spans = el.querySelectorAll('span');
+
+        if (prefersReduced) return;
+        gsap.fromTo(spans,
+          { opacity: 0, y: 18 },
+          { opacity: 1, y: 0, stagger: 0.07, duration: 0.45, ease: 'power3.out' }
+        );
+      };
+
+      show(0);
+
+      const interval = setInterval(() => {
+        const spans = el.querySelectorAll('span');
+        gsap.to(spans, {
+          opacity: 0, y: -18, stagger: 0.05, duration: 0.35, ease: 'power2.in',
+          onComplete: () => {
+            indexRef.current = (indexRef.current + 1) % TAGLINES.length;
+            show(indexRef.current);
+          }
+        });
+      }, 3200);
+
+      return () => clearInterval(interval);
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  return <div className={styles.taglineContainer} ref={containerRef} />;
+}
 
 function CountdownTimer() {
   const [time, setTime] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
@@ -131,37 +177,17 @@ function SignupForm({ onSuccess }) {
 
 export default function Home() {
   const [submittedWord, setSubmittedWord] = useState(null);
-  const [taglineIndex, setTaglineIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTaglineIndex((prev) => (prev + 1) % TAGLINES.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
 
   const handleScroll = (e) => {
     e.preventDefault();
+    document.querySelector(`.${styles.formSection}`)?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
     <>
       {/* Hero */}
       <section className={styles.hero}>
-        <div className={styles.taglineContainer}>
-          {TAGLINES.map((tagline, i) => (
-            <div
-              key={i}
-              className={styles.tagline}
-              style={{
-                opacity: i === taglineIndex ? 1 : 0,
-                transitionDuration: '0.6s',
-              }}
-            >
-              {tagline}
-            </div>
-          ))}
-        </div>
+        <TaglineRotator />
         <div className={styles.subtitle}>
           Every home has a story. We're getting ready to share ours.
         </div>
@@ -169,6 +195,10 @@ export default function Home() {
           Join the journey ↓
         </button>
         <CountdownTimer />
+      </section>
+
+      {/* Form */}
+      <section className={styles.formSection}>
         <SignupForm onSuccess={setSubmittedWord} />
       </section>
     </>
