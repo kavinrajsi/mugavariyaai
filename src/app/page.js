@@ -3,7 +3,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { ArrowDown, ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
+import { TextPlugin } from 'gsap/TextPlugin';
 import styles from './page.module.css';
+
+gsap.registerPlugin(TextPlugin);
 
 const TAGLINES = [
   'நிம்மதியின் முகவரியாய் ...',
@@ -27,26 +30,20 @@ function TaglineRotator() {
     const ctx = gsap.context(() => {
       const typeText = (index) => {
         const tagline = TAGLINES[index];
-        const chars = tagline.split('').map(char =>
-          `<span class="${styles.char}">${char}</span>`
-        ).join('');
-        el.innerHTML = `<h1 class="${styles.tagline}">${chars}</h1>`;
+        el.innerHTML = `<h1 class="${styles.tagline}"></h1>`;
         const heading = el.querySelector('h1');
-        const charSpans = heading.querySelectorAll(`.${styles.char}`);
 
         if (prefersReduced) {
-          charSpans.forEach(char => char.style.opacity = '1');
+          heading.textContent = tagline;
           return;
         }
 
-        gsap.fromTo(charSpans,
-          { opacity: 0, y: 10 },
+        gsap.fromTo(heading,
+          { text: '' },
           {
-            opacity: 1,
-            y: 0,
-            duration: 0.05,
-            stagger: 0.03,
-            ease: 'power2.out'
+            text: tagline,
+            duration: 1.2,
+            ease: 'none'
           }
         );
       };

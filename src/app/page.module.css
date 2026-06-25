@@ -28,14 +28,6 @@
   position: absolute;
   will-change: transform, opacity;
   margin: 0;
-  display: inline-flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.char {
-  display: inline-block;
-  will-change: transform, opacity;
 }
 
 .subtitle {
