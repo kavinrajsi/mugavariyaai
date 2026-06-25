@@ -5,6 +5,7 @@ import { ArrowDown, ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
 import { TextPlugin } from 'gsap/TextPlugin';
 import styles from './page.module.css';
+import Footer from './components/Footer';
 
 gsap.registerPlugin(TextPlugin);
 
@@ -472,6 +473,9 @@ export default function Home() {
       <section className={styles.formSection}>
         <SignupForm />
       </section>
+
+      {/* Footer */}
+      <Footer />
     </>
   );
 }
