@@ -123,14 +123,21 @@ export async function POST(request) {
     }
 
     const apiKey = process.env.ZOHO_ZEPTO_API_KEY;
+    const senderEmail = process.env.SENDER_EMAIL;
+    const senderName = process.env.SENDER_NAME || 'Visvas';
+    const bccEmails = process.env.BCC_EMAILS?.split(',').map(e => e.trim()) || [];
+    const emailSubject = process.env.EMAIL_SUBJECT || 'process.env.EMAIL_SUBJECT';
 
-    if (!apiKey) {
-      console.error('Missing Zoho Zepto API key in environment variables');
+    if (!apiKey || !senderEmail || bccEmails.length === 0) {
+      console.error('Missing required environment variables:', {
+        apiKey: !!apiKey,
+        senderEmail: !!senderEmail,
+        bccEmails: bccEmails.length,
+      });
       return Response.json({ error: 'Server configuration error' }, { status: 500 });
     }
 
     const zepto_url = 'https://api.zeptomail.com/v1.1/email';
-    const senderEmail = 'process.env.SENDER_EMAIL';
 
     // Send email to customer with BCC to admins
     const emailResponse = await fetch(zepto_url, {
@@ -143,7 +150,7 @@ export async function POST(request) {
       body: JSON.stringify({
         from: {
           address: senderEmail,
-          name: 'Visvas',
+          name: senderName,
         },
         to: [
           {
@@ -153,19 +160,12 @@ export async function POST(request) {
             },
           },
         ],
-        bcc: [
-          {
-            email_address: {
-              address: 'process.env.BCC_EMAILS',
-            },
+        bcc: bccEmails.map(addr => ({
+          email_address: {
+            address: addr,
           },
-          {
-            email_address: {
-              address: 'process.env.BCC_EMAILS',
-            },
-          },
-        ],
-        subject: 'process.env.EMAIL_SUBJECT',
+        })),
+        subject: emailSubject,
         htmlbody: `
           <p>Hi ${escapeHtml(name)},</p>
           <p>We received your answer: <strong>${escapeHtml(word)}</strong></p>
