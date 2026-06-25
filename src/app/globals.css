@@ -61,8 +61,8 @@ table {
   --moss: #1E5F2F;
   --mist: rgba(245, 230, 200, 0.06);
 
-  --background: var(--ink);
-  --foreground: var(--jasmine);
+  --background: var(--jasmine);
+  --foreground: var(--ink);
 
   /* Type scale */
   --text-xs: 0.75rem;

@@ -6,7 +6,7 @@
   align-items: center;
   padding: 60px 24px;
   text-align: center;
-  background: var(--ink);
+  background: var(--jasmine);
   min-height: 100vh;
 }
 
@@ -23,7 +23,7 @@
   font-family: var(--font-arima);
   font-size: var(--text-display);
   font-weight: var(--weight-semibold);
-  color: var(--jasmine);
+  color: var(--ink);
   line-height: var(--leading-tight);
   position: absolute;
   will-change: transform, opacity;
@@ -38,7 +38,7 @@
 .subtitle {
   font-family: var(--font-raleway);
   font-size: var(--text-lg);
-  color: var(--jasmine);
+  color: var(--ink);
   margin: 24px 0 48px;
   max-width: 600px;
   line-height: var(--leading-relaxed);
@@ -90,7 +90,7 @@
   font-family: var(--font-raleway);
   font-size: var(--text-sm);
   font-weight: var(--weight-medium);
-  color: var(--jasmine);
+  color: var(--ink);
   letter-spacing: var(--tracking-wide);
   line-height: var(--leading-normal);
 }
@@ -101,7 +101,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: var(--ink);
+  background: var(--jasmine);
 }
 
 .kolamSvg {
@@ -168,7 +168,7 @@
   font-family: var(--font-arima);
   font-size: var(--text-xl);
   font-weight: var(--weight-semibold);
-  color: var(--jasmine);
+  color: var(--ink);
   margin-bottom: 40px;
   text-align: left;
   line-height: var(--leading-tight);
@@ -190,7 +190,7 @@
 .inputLabel {
   font-family: var(--font-raleway);
   font-size: var(--text-sm);
-  color: var(--jasmine);
+  color: var(--ink);
   font-weight: var(--weight-medium);
   letter-spacing: 0.3px;
   text-align: left;
@@ -201,7 +201,7 @@
   padding: 12px 16px;
   background: var(--mist);
   border: 1px solid var(--gold);
-  color: var(--jasmine);
+  color: var(--ink);
   font-family: var(--font-raleway);
   font-size: var(--text-base);
   font-weight: var(--weight-regular);
@@ -272,7 +272,7 @@
 .successSubtitle {
   font-family: var(--font-raleway);
   font-size: var(--text-md);
-  color: var(--jasmine);
+  color: var(--ink);
   line-height: var(--leading-relaxed);
   font-weight: var(--weight-regular);
 }
