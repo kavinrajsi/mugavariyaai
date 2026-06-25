@@ -13,6 +13,10 @@ export async function POST(request) {
       utm_term,
       google_analytics_id,
       facebook_pixel_id,
+      referrer,
+      referrer_source,
+      is_organic_traffic,
+      referrer_hostname,
       all_url_params,
       timestamp,
     } = formData;
@@ -25,6 +29,11 @@ export async function POST(request) {
     console.log('Name:', name);
     console.log('Email:', email);
     console.log('IP Address:', ip_address);
+    console.log('--- Traffic Source ---');
+    console.log('Referrer:', referrer || 'Direct');
+    console.log('Referrer Source:', referrer_source || 'direct');
+    console.log('Is Organic:', is_organic_traffic);
+    console.log('Referrer Hostname:', referrer_hostname || 'N/A');
     console.log('--- Tracking IDs ---');
     console.log('Google Analytics ID:', google_analytics_id);
     console.log('Facebook Pixel ID:', facebook_pixel_id);
@@ -117,6 +126,12 @@ export async function POST(request) {
             <strong>Email:</strong> ${email}<br/>
             <strong>IP Address:</strong> ${ip_address || 'N/A'}<br/>
             <strong>Timestamp:</strong> ${timestamp || new Date().toISOString()}<br/>
+          </p>
+          <p>
+            <strong>Traffic Source:</strong><br/>
+            Referrer Source: ${referrer_source || 'direct'}<br/>
+            Is Organic: ${is_organic_traffic ? 'Yes' : 'No'}<br/>
+            Referrer: ${referrer || 'Direct'}<br/>
           </p>
           <p>
             <strong>Tracking IDs:</strong><br/>

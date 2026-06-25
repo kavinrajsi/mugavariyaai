@@ -164,6 +164,52 @@ function SignupForm({ onSuccess }) {
     return allParams;
   };
 
+  const getReferrerInfo = () => {
+    if (typeof window === 'undefined') return { referrer: null, is_organic: false, source: null };
+
+    const referrer = document.referrer;
+    if (!referrer) return { referrer: null, is_organic: false, source: null };
+
+    const referrerUrl = new URL(referrer);
+    const hostname = referrerUrl.hostname.toLowerCase();
+
+    let source = null;
+    let isOrganic = false;
+
+    if (hostname.includes('google')) {
+      source = 'google_organic';
+      isOrganic = true;
+    } else if (hostname.includes('bing')) {
+      source = 'bing_organic';
+      isOrganic = true;
+    } else if (hostname.includes('duckduckgo')) {
+      source = 'duckduckgo_organic';
+      isOrganic = true;
+    } else if (hostname.includes('yahoo')) {
+      source = 'yahoo_organic';
+      isOrganic = true;
+    } else if (hostname.includes('facebook')) {
+      source = 'facebook_referral';
+    } else if (hostname.includes('twitter') || hostname.includes('x.com')) {
+      source = 'twitter_referral';
+    } else if (hostname.includes('linkedin')) {
+      source = 'linkedin_referral';
+    } else if (hostname.includes('instagram')) {
+      source = 'instagram_referral';
+    } else if (hostname.includes('reddit')) {
+      source = 'reddit_referral';
+    } else {
+      source = 'referral';
+    }
+
+    return {
+      referrer: referrer,
+      is_organic: isOrganic,
+      source: source,
+      hostname: hostname,
+    };
+  };
+
   const getIPAddress = async () => {
     try {
       const response = await fetch('https://api.ipify.org?format=json');
@@ -241,6 +287,7 @@ function SignupForm({ onSuccess }) {
       const allURLParams = getAllURLParams();
       const ipAddress = await getIPAddress();
       const trackingIds = getTrackingIds();
+      const referrerInfo = getReferrerInfo();
 
       const response = await fetch('/api/submit-form', {
         method: 'POST',
@@ -257,6 +304,10 @@ function SignupForm({ onSuccess }) {
           utm_term: utmParams.utm_term,
           google_analytics_id: trackingIds.google_analytics_id,
           facebook_pixel_id: trackingIds.facebook_pixel_id,
+          referrer: referrerInfo.referrer,
+          referrer_source: referrerInfo.source,
+          is_organic_traffic: referrerInfo.is_organic,
+          referrer_hostname: referrerInfo.hostname,
           all_url_params: allURLParams,
           timestamp: new Date().toISOString(),
         }),
