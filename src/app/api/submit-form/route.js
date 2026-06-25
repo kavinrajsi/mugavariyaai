@@ -3,6 +3,19 @@ import path from 'path';
 
 const COUNTER_FILE = path.join(process.cwd(), 'submission_counter.json');
 
+// Rate limiting: store timestamps per IP
+const requestLog = new Map();
+const RATE_LIMIT_WINDOW = 10 * 60 * 1000; // 10 minutes
+const RATE_LIMIT_MAX = 3; // 3 submissions per window
+
+// HTML escape function for security
+const escapeHtml = (str) => String(str ?? '')
+  .replace(/&/g, '&amp;')
+  .replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;')
+  .replace(/"/g, '&quot;')
+  .replace(/'/g, '&#39;');
+
 async function getAndIncrementCounter() {
   try {
     const data = await fs.readFile(COUNTER_FILE, 'utf-8');
@@ -17,8 +30,39 @@ async function getAndIncrementCounter() {
   }
 }
 
+function checkRateLimit(ip) {
+  const now = Date.now();
+  if (!requestLog.has(ip)) {
+    requestLog.set(ip, []);
+  }
+
+  const timestamps = requestLog.get(ip);
+  const recent = timestamps.filter(t => now - t < RATE_LIMIT_WINDOW);
+
+  if (recent.length >= RATE_LIMIT_MAX) {
+    return false;
+  }
+
+  recent.push(now);
+  requestLog.set(ip, recent);
+  return true;
+}
+
+function getClientIp(request) {
+  return request.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
+         request.headers.get('x-real-ip') ||
+         '127.0.0.1';
+}
+
 export async function POST(request) {
   try {
+    const clientIp = getClientIp(request);
+
+    // Rate limiting check
+    if (!checkRateLimit(clientIp)) {
+      return Response.json({ error: 'Too many submissions. Please try again later.' }, { status: 429 });
+    }
+
     const formData = await request.json();
     const submissionCount = await getAndIncrementCounter();
     const {
@@ -41,52 +85,41 @@ export async function POST(request) {
       timestamp,
     } = formData;
 
-    // Log all form data to console
+    // Log form data (redacted for privacy)
     console.log('=== FORM SUBMISSION ===');
     console.log('Submission #:', submissionCount);
     console.log('Timestamp:', timestamp || new Date().toISOString());
-    console.log('--- User Info ---');
     console.log('Word:', word);
     console.log('Name:', name);
-    console.log('Email:', email);
-    console.log('IP Address:', ip_address);
-    console.log('--- Traffic Source ---');
-    console.log('Referrer:', referrer || 'Direct');
-    console.log('Referrer Source:', referrer_source || 'direct');
-    console.log('Is Organic:', is_organic_traffic);
-    console.log('Referrer Hostname:', referrer_hostname || 'N/A');
-    console.log('--- Tracking IDs ---');
-    console.log('Google Analytics ID:', google_analytics_id);
-    console.log('Facebook Pixel ID:', facebook_pixel_id);
+    console.log('Traffic Source:', referrer_source || 'direct');
     console.log('--- UTM Parameters ---');
     console.log('utm_source:', utm_source);
     console.log('utm_medium:', utm_medium);
     console.log('utm_campaign:', utm_campaign);
     console.log('utm_content:', utm_content);
     console.log('utm_term:', utm_term);
-    if (all_url_params && Object.keys(all_url_params).length > 0) {
-      console.log('--- All URL Parameters ---');
-      console.log(JSON.stringify(all_url_params, null, 2));
-    }
-    console.log('--- Full Data ---');
-    console.log(JSON.stringify(formData, null, 2));
     console.log('=======================\n');
 
     // Validation
     if (!word?.trim() || !name?.trim() || !email?.trim()) {
-      return Response.json({ error: 'Missing fields' }, { status: 400 });
+      return Response.json({ message: 'Missing fields' }, { status: 400 });
     }
 
     if (!/^[a-zA-Z\s]+$/.test(word)) {
-      return Response.json({ error: 'Answer must contain only letters and spaces' }, { status: 400 });
+      return Response.json({ message: 'Answer must contain only letters and spaces' }, { status: 400 });
     }
 
     if (name.trim().length < 4) {
-      return Response.json({ error: 'Name must be at least 4 characters' }, { status: 400 });
+      return Response.json({ message: 'Name must be at least 4 characters' }, { status: 400 });
     }
 
     if (!/^[a-zA-Z\s]+$/.test(name)) {
-      return Response.json({ error: 'Name must contain only letters and spaces' }, { status: 400 });
+      return Response.json({ message: 'Name must contain only letters and spaces' }, { status: 400 });
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return Response.json({ message: 'Please enter a valid email address' }, { status: 400 });
     }
 
     const apiKey = process.env.ZOHO_ZEPTO_API_KEY;
@@ -150,39 +183,38 @@ export async function POST(request) {
             },
           },
         ],
-        subject: `New submission: ${word}`,
+        subject: `New submission: ${escapeHtml(word)}`,
         htmlbody: `
           <p><strong>New form submission:</strong></p>
           <p>
-            <strong>Word:</strong> ${word}<br/>
-            <strong>Name:</strong> ${name}<br/>
-            <strong>Email:</strong> ${email}<br/>
-            <strong>IP Address:</strong> ${ip_address || 'N/A'}<br/>
-            <strong>Timestamp:</strong> ${timestamp || new Date().toISOString()}<br/>
+            <strong>Word:</strong> ${escapeHtml(word)}<br/>
+            <strong>Name:</strong> ${escapeHtml(name)}<br/>
+            <strong>Email:</strong> ${escapeHtml(email)}<br/>
+            <strong>Timestamp:</strong> ${escapeHtml(timestamp || new Date().toISOString())}<br/>
           </p>
           <p>
             <strong>Traffic Source:</strong><br/>
-            Referrer Source: ${referrer_source || 'direct'}<br/>
+            Referrer Source: ${escapeHtml(referrer_source || 'direct')}<br/>
             Is Organic: ${is_organic_traffic ? 'Yes' : 'No'}<br/>
-            Referrer: ${referrer || 'Direct'}<br/>
+            Referrer: ${escapeHtml(referrer || 'Direct')}<br/>
           </p>
           <p>
             <strong>Tracking IDs:</strong><br/>
-            Google Analytics ID: ${google_analytics_id || 'N/A'}<br/>
-            Facebook Pixel ID: ${facebook_pixel_id || 'N/A'}<br/>
+            Google Analytics ID: ${escapeHtml(google_analytics_id || 'N/A')}<br/>
+            Facebook Pixel ID: ${escapeHtml(facebook_pixel_id || 'N/A')}<br/>
           </p>
           <p>
             <strong>UTM Parameters:</strong><br/>
-            utm_source: ${utm_source || 'N/A'}<br/>
-            utm_medium: ${utm_medium || 'N/A'}<br/>
-            utm_campaign: ${utm_campaign || 'N/A'}<br/>
-            utm_content: ${utm_content || 'N/A'}<br/>
-            utm_term: ${utm_term || 'N/A'}<br/>
+            utm_source: ${escapeHtml(utm_source || 'N/A')}<br/>
+            utm_medium: ${escapeHtml(utm_medium || 'N/A')}<br/>
+            utm_campaign: ${escapeHtml(utm_campaign || 'N/A')}<br/>
+            utm_content: ${escapeHtml(utm_content || 'N/A')}<br/>
+            utm_term: ${escapeHtml(utm_term || 'N/A')}<br/>
           </p>
           ${all_url_params && Object.keys(all_url_params).length > 0 ? `
           <p>
             <strong>All URL Parameters:</strong><br/>
-            ${Object.entries(all_url_params).map(([key, value]) => `${key}: ${value}`).join('<br/>')}
+            ${Object.entries(all_url_params).map(([key, value]) => `${escapeHtml(String(key))}: ${escapeHtml(String(value))}`).join('<br/>')}
           </p>
           ` : ''}
         `,
@@ -197,6 +229,6 @@ export async function POST(request) {
     return Response.json({ success: true, submission_count: submissionCount }, { status: 200 });
   } catch (error) {
     console.error('Form submission error:', error);
-    return Response.json({ error: 'Failed to process submission' }, { status: 500 });
+    return Response.json({ message: 'Failed to process submission' }, { status: 500 });
   }
 }

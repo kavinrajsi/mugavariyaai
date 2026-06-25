@@ -6,22 +6,56 @@ const raleway = Raleway({
   variable: "--font-raleway",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+  display: 'swap',
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: 'swap',
 });
 
 const arima = Arima({
   variable: "--font-arima",
-  subsets: ["tamil"],
+  subsets: ["latin", "tamil"],
   weight: ["400", "600", "700"],
+  display: 'swap',
 });
 
 export const metadata = {
-  title: "Mugavariyai - Home Awaits",
-  description: "Every home has a story. We're getting ready to share ours.",
+  metadataBase: new URL('https://mugavariyai.com'),
+  title: 'Mugavariyai - Home Awaits',
+  description: 'Every home has a story. We\'re getting ready to share ours.',
+  keywords: 'mugavariyai, home, community, tamil',
+  robots: { index: true, follow: true },
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    title: 'Mugavariyai - Home Awaits',
+    description: 'Every home has a story. We\'re getting ready to share ours.',
+    url: '/',
+    siteName: 'Mugavariyai',
+    type: 'website',
+    locale: 'en_US',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Mugavariyai - Home Awaits',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Mugavariyai - Home Awaits',
+    description: 'Every home has a story. We\'re getting ready to share ours.',
+    images: ['/og-image.png'],
+  },
+  other: {
+    'color-scheme': 'light',
+  },
 };
 
 export default function RootLayout({ children }) {
@@ -33,7 +67,7 @@ export default function RootLayout({ children }) {
         {/* Google Tag Manager */}
         <Script
           id="gtm-script"
-          strategy="beforeInteractive"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],

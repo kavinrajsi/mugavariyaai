@@ -35,4 +35,3 @@ Allow: /
 
 # Sitemaps
 Sitemap: https://mugavariyai.com/sitemap.xml
-Sitemap: https://mugavariyai.com/llms.txt

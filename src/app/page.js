@@ -73,11 +73,11 @@ function TaglineRotator() {
     return () => ctx.revert();
   }, []);
 
-  return <div className={styles.taglineContainer} ref={containerRef} />;
+  return <div className={styles.taglineContainer} ref={containerRef} aria-live="polite" aria-atomic="true" />;
 }
 
 function CountdownTimer() {
-  const [time, setTime] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const [time, setTime] = useState(null);
 
   useEffect(() => {
     const target = new Date(2026, 6, 4); // July 4th, 2026
@@ -104,15 +104,15 @@ function CountdownTimer() {
 
   return (
     <div className={styles.countdownSection}>
-      <div className={styles.countdown}>
-        {pad(time.days)} : {pad(time.hours)} : {pad(time.minutes)} : {pad(time.seconds)}
+      <div className={styles.countdown} role="timer" aria-label={time ? `${time.days} days, ${time.hours} hours, ${time.minutes} minutes, ${time.seconds} seconds` : 'Loading countdown'}>
+        {time ? `${pad(time.days)} : ${pad(time.hours)} : ${pad(time.minutes)} : ${pad(time.seconds)}` : '— : — : — : —'}
       </div>
       <p className={styles.countdownLabel}>Until the doors open</p>
     </div>
   );
 }
 
-function SignupForm({ onSuccess }) {
+function SignupForm() {
   const [state, setState] = useState('form');
   const [word, setWord] = useState('');
   const [name, setName] = useState('');
@@ -325,9 +325,8 @@ function SignupForm({ onSuccess }) {
 
       if (response.ok) {
         const data = await response.json();
-        setSubmissionCount(data.submission_count || 101);
+        setSubmissionCount(data.submission_count ?? 101);
         setState('success');
-        onSuccess(word);
       } else {
         const data = await response.json().catch(() => ({}));
         setErrors({ submit: data.message || 'Failed to submit. Please try again.' });
@@ -368,7 +367,7 @@ function SignupForm({ onSuccess }) {
   return (
     <form className={styles.formContainer} onSubmit={handleSubmit} noValidate>
       <h2 className={styles.formTitle}>வீடுன்னா என்ன?</h2>
-      {errors.submit && <div className={styles.errorAlert}>{errors.submit}</div>}
+      {errors.submit && <div className={styles.errorAlert} role="alert">{errors.submit}</div>}
       <input
         type="text"
         name="website"
@@ -381,70 +380,74 @@ function SignupForm({ onSuccess }) {
       />
       <div className={styles.formGroup}>
         <div className={styles.inputWrapper}>
-          <label className={styles.inputLabel}>Your answer (1-2 words)</label>
+          <label className={styles.inputLabel} htmlFor="word">Your answer (1-2 words)</label>
           <input
             className={`${styles.input} ${errors.word ? styles.inputError : ''}`}
             type="text"
+            id="word"
             name="word"
-            placeholder="e.g., நிம்மதி, அன்பு, கனவு"
+            placeholder="e.g., Peace, Love, Home"
             value={word}
             onChange={(e) => handleFieldChange('word', e.target.value)}
             onInvalid={handleInvalidField}
             aria-invalid={!!errors.word}
+            aria-describedby={errors.word ? 'word-error' : undefined}
             required
             minLength={2}
             maxLength={50}
             pattern="[a-zA-Z\s]+"
             title="Answer must contain only letters and spaces (1-2 words)"
           />
-          {errors.word && <p className={styles.errorText}>{errors.word}</p>}
+          {errors.word && <p id="word-error" className={styles.errorText}>{errors.word}</p>}
         </div>
         <div className={styles.inputWrapper}>
-          <label className={styles.inputLabel}>Your name</label>
+          <label className={styles.inputLabel} htmlFor="name">Your name</label>
           <input
             className={`${styles.input} ${errors.name ? styles.inputError : ''}`}
             type="text"
+            id="name"
             name="name"
             placeholder="Name"
             value={name}
             onChange={(e) => handleFieldChange('name', e.target.value)}
             onInvalid={handleInvalidField}
             aria-invalid={!!errors.name}
+            aria-describedby={errors.name ? 'name-error' : undefined}
             required
             minLength={4}
             maxLength={50}
             pattern="[a-zA-Z\s]+"
             title="Name must be 4-50 characters with only letters and spaces"
           />
-          {errors.name && <p className={styles.errorText}>{errors.name}</p>}
+          {errors.name && <p id="name-error" className={styles.errorText}>{errors.name}</p>}
         </div>
         <div className={styles.inputWrapper}>
-          <label className={styles.inputLabel}>Email</label>
+          <label className={styles.inputLabel} htmlFor="email">Email</label>
           <input
             className={`${styles.input} ${errors.email ? styles.inputError : ''}`}
             type="email"
+            id="email"
             name="email"
             placeholder="your@email.com"
             value={email}
             onChange={(e) => handleFieldChange('email', e.target.value)}
             onInvalid={handleInvalidField}
             aria-invalid={!!errors.email}
+            aria-describedby={errors.email ? 'email-error' : undefined}
             required
             maxLength={100}
           />
-          {errors.email && <p className={styles.errorText}>{errors.email}</p>}
+          {errors.email && <p id="email-error" className={styles.errorText}>{errors.email}</p>}
         </div>
       </div>
       <button className={styles.submitBtn} type="submit" disabled={isSubmitting}>
-        {isSubmitting ? 'Joining...' : <>Join the journey <ArrowRight size={20} /></>}
+        {isSubmitting ? 'Joining...' : <>Join the journey <ArrowRight size={20} aria-hidden="true" /></>}
       </button>
     </form>
   );
 }
 
 export default function Home() {
-  const [submittedWord, setSubmittedWord] = useState(null);
-
   const handleScroll = (e) => {
     e.preventDefault();
     document.querySelector(`.${styles.formSection}`)?.scrollIntoView({ behavior: 'smooth' });
@@ -459,14 +462,14 @@ export default function Home() {
           Every home has a story. We're getting ready to share ours.
         </div>
         <button className={styles.ctaScroll} onClick={handleScroll}>
-          Join the journey <ArrowDown size={20} />
+          Join the journey <ArrowDown size={20} aria-hidden="true" />
         </button>
         <CountdownTimer />
       </section>
 
       {/* Form */}
       <section className={styles.formSection}>
-        <SignupForm onSuccess={setSubmittedWord} />
+        <SignupForm />
       </section>
     </>
   );

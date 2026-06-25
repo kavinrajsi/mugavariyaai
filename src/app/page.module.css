@@ -90,61 +90,6 @@
   line-height: var(--leading-normal);
 }
 
-/* Kolam Divider */
-.kolamContainer {
-  padding: 80px 24px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: var(--jasmine);
-}
-
-.kolamSvg {
-  width: 100%;
-  max-width: 900px;
-  height: auto;
-}
-
-.kolamStroke {
-  stroke: var(--gold);
-  stroke-width: 1.5;
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  animation: drawStroke 2s ease-out forwards;
-  opacity: 0;
-}
-
-.kolamDot {
-  fill: var(--gold);
-  animation: dotAppear 1.5s ease-out forwards;
-  opacity: 0;
-}
-
-@keyframes drawStroke {
-  from {
-    stroke-dasharray: 1000;
-    stroke-dashoffset: 1000;
-    opacity: 1;
-  }
-  to {
-    stroke-dasharray: 1000;
-    stroke-dashoffset: 0;
-    opacity: 1;
-  }
-}
-
-@keyframes dotAppear {
-  from {
-    opacity: 0;
-    transform: scale(0);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
 /* Form Section */
 .formSection {
   padding: 60px 24px;
