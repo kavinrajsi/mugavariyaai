@@ -1,7 +1,4 @@
-import { promises as fs } from 'fs';
-
-// Use /tmp for Vercel compatibility (read-only filesystem)
-const COUNTER_FILE = '/tmp/submission_counter.json';
+import sql from '@/lib/db';
 
 // Rate limiting: store timestamps per IP
 const requestLog = new Map();
@@ -15,20 +12,6 @@ const escapeHtml = (str) => String(str ?? '')
   .replace(/>/g, '&gt;')
   .replace(/"/g, '&quot;')
   .replace(/'/g, '&#39;');
-
-async function getAndIncrementCounter() {
-  try {
-    const data = await fs.readFile(COUNTER_FILE, 'utf-8');
-    const counter = JSON.parse(data);
-    counter.count += 1;
-    await fs.writeFile(COUNTER_FILE, JSON.stringify(counter, null, 2));
-    return counter.count;
-  } catch (error) {
-    const initialCount = { count: 101 };
-    await fs.writeFile(COUNTER_FILE, JSON.stringify(initialCount, null, 2));
-    return 101;
-  }
-}
 
 function checkRateLimit(ip) {
   const now = Date.now();
@@ -64,7 +47,6 @@ export async function POST(request) {
     }
 
     const formData = await request.json();
-    const submissionCount = await getAndIncrementCounter();
     const {
       word,
       name,
@@ -84,21 +66,6 @@ export async function POST(request) {
       all_url_params,
       timestamp,
     } = formData;
-
-    // Log form data (redacted for privacy)
-    console.log('=== FORM SUBMISSION ===');
-    console.log('Submission #:', submissionCount);
-    console.log('Timestamp:', timestamp || new Date().toISOString());
-    console.log('Word:', word);
-    console.log('Name:', name);
-    console.log('Traffic Source:', referrer_source || 'direct');
-    console.log('--- UTM Parameters ---');
-    console.log('utm_source:', utm_source);
-    console.log('utm_medium:', utm_medium);
-    console.log('utm_campaign:', utm_campaign);
-    console.log('utm_content:', utm_content);
-    console.log('utm_term:', utm_term);
-    console.log('=======================\n');
 
     // Validation
     if (!word?.trim() || !name?.trim() || !email?.trim()) {
@@ -121,6 +88,43 @@ export async function POST(request) {
     if (!emailRegex.test(email)) {
       return Response.json({ message: 'Please enter a valid email address' }, { status: 400 });
     }
+
+    // Insert into database and get count
+    const inserted = await sql`
+      INSERT INTO submissions (
+        word, name, email, ip_address,
+        utm_source, utm_medium, utm_campaign, utm_content, utm_term,
+        ga_id, fb_pixel_id, referrer, referrer_source,
+        is_organic, referrer_hostname, all_url_params, client_timestamp
+      ) VALUES (
+        ${word}, ${name}, ${email}, ${clientIp},
+        ${utm_source || null}, ${utm_medium || null}, ${utm_campaign || null},
+        ${utm_content || null}, ${utm_term || null},
+        ${google_analytics_id || null}, ${facebook_pixel_id || null},
+        ${referrer || null}, ${referrer_source || null},
+        ${is_organic_traffic || null}, ${referrer_hostname || null},
+        ${all_url_params ? JSON.stringify(all_url_params) : null},
+        ${timestamp || null}
+      ) RETURNING id
+    `;
+
+    const countResult = await sql`SELECT COUNT(*) AS count FROM submissions`;
+    const submissionCount = 100 + parseInt(countResult[0].count);
+
+    // Log form data (redacted for privacy)
+    console.log('=== FORM SUBMISSION ===');
+    console.log('Submission #:', submissionCount);
+    console.log('Timestamp:', timestamp || new Date().toISOString());
+    console.log('Word:', word);
+    console.log('Name:', name);
+    console.log('Traffic Source:', referrer_source || 'direct');
+    console.log('--- UTM Parameters ---');
+    console.log('utm_source:', utm_source);
+    console.log('utm_medium:', utm_medium);
+    console.log('utm_campaign:', utm_campaign);
+    console.log('utm_content:', utm_content);
+    console.log('utm_term:', utm_term);
+    console.log('=======================\n');
 
     const apiKey = process.env.ZOHO_ZEPTO_API_KEY;
     const senderEmail = process.env.SENDER_EMAIL;
