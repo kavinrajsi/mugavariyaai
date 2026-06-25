@@ -1,10 +1,11 @@
-import { Geist, Geist_Mono, Arima, Cormorant_Garamond } from "next/font/google";
+import { Geist_Mono, Raleway, Arima } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const raleway = Raleway({
+  variable: "--font-raleway",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 const geistMono = Geist_Mono({
@@ -18,12 +19,6 @@ const arima = Arima({
   weight: ["400", "600", "700"],
 });
 
-const cormorantGaramond = Cormorant_Garamond({
-  variable: "--font-cormorant",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-});
-
 export const metadata = {
   title: "Mugavariyai - Home Awaits",
   description: "Every home has a story. We're getting ready to share ours.",
@@ -33,7 +28,7 @@ export default function RootLayout({ children }) {
   const GTM_ID = "GTM-WFT3JSDX";
 
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${arima.variable} ${cormorantGaramond.variable}`}>
+    <html lang="en" className={`${raleway.variable} ${geistMono.variable} ${arima.variable}`}>
       <head>
         {/* Google Tag Manager */}
         <Script
