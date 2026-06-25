@@ -28,6 +28,14 @@
   position: absolute;
   will-change: transform, opacity;
   margin: 0;
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.char {
+  display: inline-block;
+  will-change: transform, opacity;
 }
 
 .subtitle {
@@ -46,7 +54,7 @@
   gap: 8px;
   padding: 12px 28px;
   background: var(--moss);
-  color: var(--ink);
+  color: white;
   border: none;
   border-radius: 4px;
   font-family: var(--font-raleway);
@@ -220,7 +228,7 @@
   width: 100%;
   padding: 14px 24px;
   background: var(--moss);
-  color: var(--ink);
+  color: white;
   border: none;
   border-radius: 4px;
   font-family: var(--font-raleway);

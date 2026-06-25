@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { ArrowDown, ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
 import styles from './page.module.css';
 
@@ -26,17 +27,27 @@ function TaglineRotator() {
     const ctx = gsap.context(() => {
       const typeText = (index) => {
         const tagline = TAGLINES[index];
-        el.innerHTML = `<h1 class="${styles.tagline}">${tagline}</h1>`;
+        const chars = tagline.split('').map(char =>
+          `<span class="${styles.char}">${char}</span>`
+        ).join('');
+        el.innerHTML = `<h1 class="${styles.tagline}">${chars}</h1>`;
         const heading = el.querySelector('h1');
+        const charSpans = heading.querySelectorAll(`.${styles.char}`);
 
         if (prefersReduced) {
-          heading.style.opacity = '1';
+          charSpans.forEach(char => char.style.opacity = '1');
           return;
         }
 
-        gsap.fromTo(heading,
+        gsap.fromTo(charSpans,
           { opacity: 0, y: 10 },
-          { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.05,
+            stagger: 0.03,
+            ease: 'power2.out'
+          }
         );
       };
 
@@ -110,7 +121,7 @@ function SignupForm({ onSuccess }) {
   const [email, setEmail] = useState('');
   const [errors, setErrors] = useState({});
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
 
@@ -127,8 +138,22 @@ function SignupForm({ onSuccess }) {
       return;
     }
 
-    setState('success');
-    onSuccess(word);
+    try {
+      const response = await fetch('/api/submit-form', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ word, name, email }),
+      });
+
+      if (response.ok) {
+        setState('success');
+        onSuccess(word);
+      } else {
+        setErrors({ submit: 'Failed to submit. Please try again.' });
+      }
+    } catch (error) {
+      setErrors({ submit: 'Network error. Please try again.' });
+    }
   };
 
   if (state === 'success') {
@@ -145,6 +170,7 @@ function SignupForm({ onSuccess }) {
   return (
     <form className={styles.formContainer} onSubmit={handleSubmit}>
       <h2 className={styles.formTitle}>வீடுன்னா என்ன?</h2>
+      {errors.submit && <p style={{ color: '#E4A025', marginBottom: '16px' }}>{errors.submit}</p>}
       <div className={styles.formGroup}>
         <div className={styles.inputWrapper}>
           <label className={styles.inputLabel}>Your answer (1-2 words)</label>
@@ -178,7 +204,7 @@ function SignupForm({ onSuccess }) {
         </div>
       </div>
       <button className={styles.submitBtn} type="submit">
-        Join the journey →
+        Join the journey <ArrowRight size={20} />
       </button>
     </form>
   );
@@ -201,7 +227,7 @@ export default function Home() {
           Every home has a story. We're getting ready to share ours.
         </div>
         <button className={styles.ctaScroll} onClick={handleScroll}>
-          Join the journey ↓
+          Join the journey <ArrowDown size={20} />
         </button>
         <CountdownTimer />
       </section>
