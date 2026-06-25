@@ -38,7 +38,6 @@
 .subtitle {
   font-family: var(--font-raleway);
   font-size: var(--text-lg);
-  font-style: italic;
   color: var(--jasmine);
   margin: 24px 0 48px;
   max-width: 600px;
