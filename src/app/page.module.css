@@ -556,13 +556,14 @@
 
   .footerPoliciesList {
     justify-content: center;
-    flex-direction: column;
-    gap: 8px;
+    gap: 0;
   }
 
   .footerPoliciesList li:not(:last-child)::after {
-    content: '';
-    margin: 0;
+    content: '·';
+    margin: 0 8px;
+    color: var(--ink);
+    opacity: 0.3;
   }
 
   .footerPolicyLink {
