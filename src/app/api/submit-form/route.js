@@ -201,7 +201,7 @@ export async function POST(request) {
       ) RETURNING id
     `;
 
-    const countResult = await sql`SELECT COUNT(*) AS count FROM submissions`;
+    const countResult = await sql`SELECT COUNT(*) AS count FROM submissions WHERE status = 'success'`;
     const submissionCount = 100 + parseInt(countResult[0].count);
 
     // Log form data (redacted for privacy)
