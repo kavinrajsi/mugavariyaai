@@ -37,12 +37,53 @@ function getClientIp(request) {
          '127.0.0.1';
 }
 
+async function logAttempt(fields) {
+  try {
+    await sql`
+      INSERT INTO submissions (
+        ip_address, word, name, email,
+        utm_source, utm_medium, utm_campaign, utm_content, utm_term,
+        ga_id, fb_pixel_id, referrer, referrer_source,
+        is_organic, referrer_hostname, all_url_params, client_timestamp,
+        status, error_message
+      ) VALUES (
+        ${fields.ip_address || null},
+        ${fields.word || null},
+        ${fields.name || null},
+        ${fields.email || null},
+        ${fields.utm_source || null},
+        ${fields.utm_medium || null},
+        ${fields.utm_campaign || null},
+        ${fields.utm_content || null},
+        ${fields.utm_term || null},
+        ${fields.google_analytics_id || null},
+        ${fields.facebook_pixel_id || null},
+        ${fields.referrer || null},
+        ${fields.referrer_source || null},
+        ${fields.is_organic_traffic || null},
+        ${fields.referrer_hostname || null},
+        ${fields.all_url_params ? JSON.stringify(fields.all_url_params) : null},
+        ${fields.timestamp || null},
+        ${fields.status || 'success'},
+        ${fields.error_message || null}
+      )
+    `;
+  } catch (err) {
+    console.error('Failed to log attempt to database:', err);
+  }
+}
+
 export async function POST(request) {
   try {
     const clientIp = getClientIp(request);
 
     // Rate limiting check
     if (!checkRateLimit(clientIp)) {
+      await logAttempt({
+        ip_address: clientIp,
+        status: 'rate_limited',
+        error_message: 'Too many submissions. Please try again later.'
+      });
       return Response.json({ error: 'Too many submissions. Please try again later.' }, { status: 429 });
     }
 
@@ -69,23 +110,73 @@ export async function POST(request) {
 
     // Validation
     if (!word?.trim() || !name?.trim() || !email?.trim()) {
+      await logAttempt({
+        ip_address: clientIp,
+        word, name, email,
+        utm_source, utm_medium, utm_campaign, utm_content, utm_term,
+        google_analytics_id, facebook_pixel_id, referrer,
+        referrer_source, is_organic_traffic, referrer_hostname,
+        all_url_params, timestamp,
+        status: 'validation_error',
+        error_message: 'Missing fields'
+      });
       return Response.json({ message: 'Missing fields' }, { status: 400 });
     }
 
     if (!/^[a-zA-Z\s]+$/.test(word)) {
+      await logAttempt({
+        ip_address: clientIp,
+        word, name, email,
+        utm_source, utm_medium, utm_campaign, utm_content, utm_term,
+        google_analytics_id, facebook_pixel_id, referrer,
+        referrer_source, is_organic_traffic, referrer_hostname,
+        all_url_params, timestamp,
+        status: 'validation_error',
+        error_message: 'Answer must contain only letters and spaces'
+      });
       return Response.json({ message: 'Answer must contain only letters and spaces' }, { status: 400 });
     }
 
     if (name.trim().length < 4) {
+      await logAttempt({
+        ip_address: clientIp,
+        word, name, email,
+        utm_source, utm_medium, utm_campaign, utm_content, utm_term,
+        google_analytics_id, facebook_pixel_id, referrer,
+        referrer_source, is_organic_traffic, referrer_hostname,
+        all_url_params, timestamp,
+        status: 'validation_error',
+        error_message: 'Name must be at least 4 characters'
+      });
       return Response.json({ message: 'Name must be at least 4 characters' }, { status: 400 });
     }
 
     if (!/^[a-zA-Z\s]+$/.test(name)) {
+      await logAttempt({
+        ip_address: clientIp,
+        word, name, email,
+        utm_source, utm_medium, utm_campaign, utm_content, utm_term,
+        google_analytics_id, facebook_pixel_id, referrer,
+        referrer_source, is_organic_traffic, referrer_hostname,
+        all_url_params, timestamp,
+        status: 'validation_error',
+        error_message: 'Name must contain only letters and spaces'
+      });
       return Response.json({ message: 'Name must contain only letters and spaces' }, { status: 400 });
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
+      await logAttempt({
+        ip_address: clientIp,
+        word, name, email,
+        utm_source, utm_medium, utm_campaign, utm_content, utm_term,
+        google_analytics_id, facebook_pixel_id, referrer,
+        referrer_source, is_organic_traffic, referrer_hostname,
+        all_url_params, timestamp,
+        status: 'validation_error',
+        error_message: 'Please enter a valid email address'
+      });
       return Response.json({ message: 'Please enter a valid email address' }, { status: 400 });
     }
 
@@ -95,7 +186,8 @@ export async function POST(request) {
         word, name, email, ip_address,
         utm_source, utm_medium, utm_campaign, utm_content, utm_term,
         ga_id, fb_pixel_id, referrer, referrer_source,
-        is_organic, referrer_hostname, all_url_params, client_timestamp
+        is_organic, referrer_hostname, all_url_params, client_timestamp,
+        status
       ) VALUES (
         ${word}, ${name}, ${email}, ${clientIp},
         ${utm_source || null}, ${utm_medium || null}, ${utm_campaign || null},
@@ -104,7 +196,8 @@ export async function POST(request) {
         ${referrer || null}, ${referrer_source || null},
         ${is_organic_traffic || null}, ${referrer_hostname || null},
         ${all_url_params ? JSON.stringify(all_url_params) : null},
-        ${timestamp || null}
+        ${timestamp || null},
+        'success'
       ) RETURNING id
     `;
 
@@ -137,6 +230,16 @@ export async function POST(request) {
         apiKey: !!apiKey,
         senderEmail: !!senderEmail,
         bccEmails: bccEmails.length,
+      });
+      await logAttempt({
+        ip_address: clientIp,
+        word, name, email,
+        utm_source, utm_medium, utm_campaign, utm_content, utm_term,
+        google_analytics_id, facebook_pixel_id, referrer,
+        referrer_source, is_organic_traffic, referrer_hostname,
+        all_url_params, timestamp,
+        status: 'server_error',
+        error_message: 'Missing required environment variables'
       });
       return Response.json({ error: 'Server configuration error' }, { status: 500 });
     }
@@ -212,13 +315,29 @@ export async function POST(request) {
     });
 
     if (!emailResponse.ok) {
-      console.error('Email failed:', await emailResponse.text());
+      const emailErrorMsg = await emailResponse.text();
+      console.error('Email failed:', emailErrorMsg);
+      await logAttempt({
+        ip_address: clientIp,
+        word, name, email,
+        utm_source, utm_medium, utm_campaign, utm_content, utm_term,
+        google_analytics_id, facebook_pixel_id, referrer,
+        referrer_source, is_organic_traffic, referrer_hostname,
+        all_url_params, timestamp,
+        status: 'email_failed',
+        error_message: `Email service error: ${emailErrorMsg.substring(0, 255)}`
+      });
       throw new Error('Failed to send submission email');
     }
 
     return Response.json({ success: true, submission_count: submissionCount }, { status: 200 });
   } catch (error) {
     console.error('Form submission error:', error);
+    await logAttempt({
+      ip_address: getClientIp(request),
+      status: 'server_error',
+      error_message: error.message.substring(0, 255)
+    });
     return Response.json({ message: 'Failed to process submission' }, { status: 500 });
   }
 }
