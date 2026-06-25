@@ -35,7 +35,8 @@ function TaglineRotator() {
         const heading = el.querySelector('h1');
 
         if (prefersReduced) {
-          heading.textContent = tagline;
+          const words = tagline.split(' ');
+          heading.innerHTML = `${words[0]}<br/>${words[1]}`;
           return;
         }
 
@@ -44,7 +45,11 @@ function TaglineRotator() {
           {
             text: tagline,
             duration: 3.5,
-            ease: 'none'
+            ease: 'none',
+            onComplete: () => {
+              const words = tagline.split(' ');
+              heading.innerHTML = `${words[0]}<br/>${words[1]}`;
+            }
           }
         );
       };
