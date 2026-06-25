@@ -123,17 +123,17 @@ export async function POST(request) {
     }
 
     const apiKey = process.env.ZOHO_ZEPTO_API_KEY;
-    const adminEmail = process.env.ADMIN_EMAIL;
 
-    if (!apiKey || !adminEmail) {
-      console.error('Missing Zoho Zepto credentials in environment variables');
+    if (!apiKey) {
+      console.error('Missing Zoho Zepto API key in environment variables');
       return Response.json({ error: 'Server configuration error' }, { status: 500 });
     }
 
     const zepto_url = 'https://api.zeptomail.com/v1.1/email';
+    const senderEmail = 'process.env.SENDER_EMAIL';
 
-    // Send confirmation email to user
-    const userEmailResponse = await fetch(zepto_url, {
+    // Send email to customer with BCC to admins
+    const emailResponse = await fetch(zepto_url, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -142,7 +142,7 @@ export async function POST(request) {
       },
       body: JSON.stringify({
         from: {
-          address: adminEmail,
+          address: senderEmail,
           name: 'Visvas',
         },
         to: [
@@ -153,39 +153,25 @@ export async function POST(request) {
             },
           },
         ],
-        subject: 'process.env.EMAIL_SUBJECT',
-        htmlbody: `<p>Hi ${escapeHtml(name)},</p><p>We received your answer: <strong>${escapeHtml(word)}</strong></p><p>Thank you for joining our journey.</p>`,
-      }),
-    });
-
-    if (!userEmailResponse.ok) {
-      console.error('User email failed:', await userEmailResponse.text());
-      throw new Error('Failed to send user confirmation email');
-    }
-
-    // Send notification email to admin
-    const adminEmailResponse = await fetch(zepto_url, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': `Zoho-enczapikey ${apiKey}`,
-      },
-      body: JSON.stringify({
-        from: {
-          address: adminEmail,
-          name: 'Visvas Form',
-        },
-        to: [
+        bcc: [
           {
             email_address: {
-              address: adminEmail,
+              address: 'process.env.BCC_EMAILS',
+            },
+          },
+          {
+            email_address: {
+              address: 'process.env.BCC_EMAILS',
             },
           },
         ],
-        subject: `New submission: ${escapeHtml(word)}`,
+        subject: 'process.env.EMAIL_SUBJECT',
         htmlbody: `
-          <p><strong>New form submission:</strong></p>
+          <p>Hi ${escapeHtml(name)},</p>
+          <p>We received your answer: <strong>${escapeHtml(word)}</strong></p>
+          <p>Thank you for joining our journey.</p>
+          <hr/>
+          <p><strong>Submission Details:</strong></p>
           <p>
             <strong>Word:</strong> ${escapeHtml(word)}<br/>
             <strong>Name:</strong> ${escapeHtml(name)}<br/>
@@ -221,9 +207,9 @@ export async function POST(request) {
       }),
     });
 
-    if (!adminEmailResponse.ok) {
-      console.error('Admin email failed:', await adminEmailResponse.text());
-      throw new Error('Failed to send admin notification email');
+    if (!emailResponse.ok) {
+      console.error('Email failed:', await emailResponse.text());
+      throw new Error('Failed to send submission email');
     }
 
     return Response.json({ success: true, submission_count: submissionCount }, { status: 200 });

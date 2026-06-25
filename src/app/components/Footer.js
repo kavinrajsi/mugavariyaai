@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import styles from '../page.module.css';
+import Link from "next/link";
+import styles from "../page.module.css";
 
 export default function Footer() {
   return (
@@ -9,7 +9,7 @@ export default function Footer() {
       <div className={styles.footerContent}>
         <div className={styles.footerLeft}>
           <p className={styles.footerCopyright}>
-            © {new Date().getFullYear()}{' '}
+            &copy; {new Date().getFullYear()}{" "}
             <a
               href="https://visvas.in?utm_source=mugavariyai&utm_medium=footer&utm_campaign=landing"
               target="_blank"
@@ -24,16 +24,26 @@ export default function Footer() {
 
         <nav className={styles.footerRight}>
           <ul className={styles.footerPoliciesList}>
-            <li><Link href="/privacy" className={styles.footerPolicyLink}>Privacy Policy</Link></li>
-            <li><Link href="/terms" className={styles.footerPolicyLink}>Terms & Conditions</Link></li>
-            <li><Link href="/cookies" className={styles.footerPolicyLink}>Cookie Policy</Link></li>
+            <li>
+              <Link href="/privacy" className={styles.footerPolicyLink}>
+                Privacy Policy
+              </Link>
+            </li>
+            <li>
+              <Link href="/terms" className={styles.footerPolicyLink}>
+                Terms & Conditions
+              </Link>
+            </li>
+            <li>
+              <Link href="/cookies" className={styles.footerPolicyLink}>
+                Cookie Policy
+              </Link>
+            </li>
           </ul>
         </nav>
-      </div>
 
-      <div className={styles.footerCredit}>
         <p className={styles.footerMadeBy}>
-          Made by{' '}
+          Made by{" "}
           <a
             href="https://madarth.com?utm_source=mugavariyai&utm_medium=footer&utm_campaign=credit"
             target="_blank"
