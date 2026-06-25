@@ -81,6 +81,7 @@
   letter-spacing: var(--tracking-wider);
   line-height: var(--leading-tight);
   white-space: nowrap;
+  padding: 0 16px;
 }
 
 .countdownLabel {
