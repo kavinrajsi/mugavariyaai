@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';
-import path from 'path';
 
-const COUNTER_FILE = path.join(process.cwd(), 'submission_counter.json');
+// Use /tmp for Vercel compatibility (read-only filesystem)
+const COUNTER_FILE = '/tmp/submission_counter.json';
 
 // Rate limiting: store timestamps per IP
 const requestLog = new Map();
