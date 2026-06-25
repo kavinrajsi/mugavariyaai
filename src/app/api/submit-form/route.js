@@ -77,6 +77,14 @@ export async function POST(request) {
       return Response.json({ error: 'Missing fields' }, { status: 400 });
     }
 
+    if (name.trim().length < 4) {
+      return Response.json({ error: 'Name must be at least 4 characters' }, { status: 400 });
+    }
+
+    if (!/^[a-zA-Z\s]+$/.test(name)) {
+      return Response.json({ error: 'Name must contain only letters and spaces' }, { status: 400 });
+    }
+
     const apiKey = process.env.ZOHO_ZEPTO_API_KEY;
     const adminEmail = process.env.ADMIN_EMAIL;
 

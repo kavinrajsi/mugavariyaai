@@ -132,8 +132,9 @@ function SignupForm({ onSuccess }) {
 
   const validateName = (value) => {
     if (!value.trim()) return 'Required';
-    if (value.trim().length < 2) return 'Name must be at least 2 characters';
+    if (value.trim().length < 4) return 'Name must be at least 4 characters';
     if (value.trim().length > 50) return 'Name must be less than 50 characters';
+    if (!/^[a-zA-Z\s]+$/.test(value)) return 'Name must contain only letters and spaces';
     return '';
   };
 
@@ -248,7 +249,10 @@ function SignupForm({ onSuccess }) {
 
   const handleFieldChange = (field, value) => {
     if (field === 'word') setWord(value);
-    if (field === 'name') setName(value);
+    if (field === 'name') {
+      const sanitized = value.replace(/[^a-zA-Z\s]/g, '');
+      setName(sanitized);
+    }
     if (field === 'email') setEmail(value);
 
     if (errors[field]) {
