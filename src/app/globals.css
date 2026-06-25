@@ -8,6 +8,31 @@
 
   --background: var(--ink);
   --foreground: var(--jasmine);
+
+  /* Type scale */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-md: 1.125rem;
+  --text-lg: clamp(1.5rem, 4vw, 2rem);
+  --text-xl: clamp(1.8rem, 5vw, 2.5rem);
+  --text-2xl: clamp(2rem, 6vw, 3.5rem);
+  --text-display: clamp(2.5rem, 8vw, 5rem);
+
+  /* Weights */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* Leading */
+  --leading-tight: 1.1;
+  --leading-normal: 1.4;
+  --leading-relaxed: 1.6;
+
+  /* Tracking */
+  --tracking-wide: 0.05em;
+  --tracking-wider: 0.15em;
 }
 
 html {

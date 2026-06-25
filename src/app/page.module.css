@@ -20,11 +20,11 @@
 }
 
 .tagline {
-  font-family: var(--font-noto-tamil);
-  font-size: clamp(2.5rem, 8vw, 5rem);
-  font-weight: 600;
+  font-family: var(--font-arima);
+  font-size: var(--text-display);
+  font-weight: var(--weight-semibold);
   color: var(--jasmine);
-  line-height: 1.1;
+  line-height: var(--leading-tight);
   position: absolute;
   will-change: transform, opacity;
 }
@@ -35,13 +35,13 @@
 
 .subtitle {
   font-family: var(--font-cormorant);
-  font-size: clamp(1.2rem, 4vw, 2rem);
+  font-size: var(--text-lg);
   font-style: italic;
   color: var(--jasmine);
   margin: 24px 0 48px;
   max-width: 600px;
-  line-height: 1.6;
-  font-weight: 400;
+  line-height: var(--leading-relaxed);
+  font-weight: var(--weight-regular);
 }
 
 .ctaScroll {
@@ -54,8 +54,9 @@
   border: none;
   border-radius: 4px;
   font-family: var(--font-geist-sans);
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-normal);
   cursor: pointer;
   transition: all 0.3s ease;
   margin: 40px 0;
@@ -75,19 +76,22 @@
 }
 
 .countdown {
-  font-family: var(--font-cormorant);
-  font-size: clamp(2rem, 6vw, 3.5rem);
-  font-weight: 600;
+  font-family: var(--font-geist-mono);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-semibold);
   font-variant-numeric: tabular-nums;
   color: var(--gold);
-  letter-spacing: 4px;
+  letter-spacing: var(--tracking-wider);
+  line-height: var(--leading-tight);
 }
 
 .countdownLabel {
   font-family: var(--font-geist-sans);
-  font-size: 1rem;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
   color: var(--jasmine);
-  letter-spacing: 1px;
+  letter-spacing: var(--tracking-wide);
+  line-height: var(--leading-normal);
 }
 
 /* Kolam Divider */
@@ -160,12 +164,13 @@
 }
 
 .formTitle {
-  font-family: var(--font-noto-tamil);
-  font-size: clamp(1.8rem, 5vw, 2.5rem);
-  font-weight: 600;
+  font-family: var(--font-arima);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-semibold);
   color: var(--jasmine);
   margin-bottom: 40px;
   text-align: left;
+  line-height: var(--leading-tight);
 }
 
 .formGroup {
@@ -183,11 +188,12 @@
 
 .inputLabel {
   font-family: var(--font-geist-sans);
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
   color: var(--jasmine);
-  font-weight: 500;
+  font-weight: var(--weight-medium);
   letter-spacing: 0.3px;
   text-align: left;
+  line-height: var(--leading-normal);
 }
 
 .input {
@@ -196,7 +202,9 @@
   border: 1px solid var(--gold);
   color: var(--jasmine);
   font-family: var(--font-geist-sans);
-  font-size: 1rem;
+  font-size: var(--text-base);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-normal);
   border-radius: 4px;
   transition: all 0.3s ease;
 }
@@ -220,8 +228,9 @@
   border: none;
   border-radius: 4px;
   font-family: var(--font-geist-sans);
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-normal);
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
@@ -251,18 +260,20 @@
 }
 
 .successHeading {
-  font-family: var(--font-noto-tamil);
-  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-family: var(--font-arima);
+  font-size: var(--text-lg);
   color: var(--gold);
   margin-bottom: 16px;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-tight);
 }
 
 .successSubtitle {
   font-family: var(--font-geist-sans);
-  font-size: 1.1rem;
+  font-size: var(--text-md);
   color: var(--jasmine);
-  line-height: 1.6;
+  line-height: var(--leading-relaxed);
+  font-weight: var(--weight-regular);
 }
 
 /* Responsive */
@@ -302,18 +313,12 @@
   }
 
   .subtitle {
-    font-size: 1rem;
     margin: 16px 0 32px;
   }
 
   .ctaScroll {
-    font-size: 0.95rem;
     padding: 10px 20px;
     margin: 20px 0;
-  }
-
-  .countdown {
-    font-size: 2rem;
   }
 
   .kolamContainer {
@@ -323,11 +328,6 @@
   .formSection {
     padding: 40px 16px;
     min-height: auto;
-  }
-
-  .formTitle {
-    font-size: 1.5rem;
-    margin-bottom: 24px;
   }
 
   .formGroup {

@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 const arima = Arima({
-  variable: "--font-noto-tamil",
+  variable: "--font-arima",
   subsets: ["tamil"],
   weight: ["400", "600", "700"],
 });
