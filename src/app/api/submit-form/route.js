@@ -1,6 +1,46 @@
 export async function POST(request) {
   try {
-    const { word, name, email } = await request.json();
+    const formData = await request.json();
+    const {
+      word,
+      name,
+      email,
+      ip_address,
+      utm_source,
+      utm_medium,
+      utm_campaign,
+      utm_content,
+      utm_term,
+      google_analytics_id,
+      facebook_pixel_id,
+      all_url_params,
+      timestamp,
+    } = formData;
+
+    // Log all form data to console
+    console.log('=== FORM SUBMISSION ===');
+    console.log('Timestamp:', timestamp || new Date().toISOString());
+    console.log('--- User Info ---');
+    console.log('Word:', word);
+    console.log('Name:', name);
+    console.log('Email:', email);
+    console.log('IP Address:', ip_address);
+    console.log('--- Tracking IDs ---');
+    console.log('Google Analytics ID:', google_analytics_id);
+    console.log('Facebook Pixel ID:', facebook_pixel_id);
+    console.log('--- UTM Parameters ---');
+    console.log('utm_source:', utm_source);
+    console.log('utm_medium:', utm_medium);
+    console.log('utm_campaign:', utm_campaign);
+    console.log('utm_content:', utm_content);
+    console.log('utm_term:', utm_term);
+    if (all_url_params && Object.keys(all_url_params).length > 0) {
+      console.log('--- All URL Parameters ---');
+      console.log(JSON.stringify(all_url_params, null, 2));
+    }
+    console.log('--- Full Data ---');
+    console.log(JSON.stringify(formData, null, 2));
+    console.log('=======================\n');
 
     // Validation
     if (!word?.trim() || !name?.trim() || !email?.trim()) {
@@ -69,7 +109,35 @@ export async function POST(request) {
           },
         ],
         subject: `New submission: ${word}`,
-        htmlbody: `<p><strong>New form submission:</strong></p><p>Word: <strong>${word}</strong><br/>Name: ${name}<br/>Email: ${email}</p>`,
+        htmlbody: `
+          <p><strong>New form submission:</strong></p>
+          <p>
+            <strong>Word:</strong> ${word}<br/>
+            <strong>Name:</strong> ${name}<br/>
+            <strong>Email:</strong> ${email}<br/>
+            <strong>IP Address:</strong> ${ip_address || 'N/A'}<br/>
+            <strong>Timestamp:</strong> ${timestamp || new Date().toISOString()}<br/>
+          </p>
+          <p>
+            <strong>Tracking IDs:</strong><br/>
+            Google Analytics ID: ${google_analytics_id || 'N/A'}<br/>
+            Facebook Pixel ID: ${facebook_pixel_id || 'N/A'}<br/>
+          </p>
+          <p>
+            <strong>UTM Parameters:</strong><br/>
+            utm_source: ${utm_source || 'N/A'}<br/>
+            utm_medium: ${utm_medium || 'N/A'}<br/>
+            utm_campaign: ${utm_campaign || 'N/A'}<br/>
+            utm_content: ${utm_content || 'N/A'}<br/>
+            utm_term: ${utm_term || 'N/A'}<br/>
+          </p>
+          ${all_url_params && Object.keys(all_url_params).length > 0 ? `
+          <p>
+            <strong>All URL Parameters:</strong><br/>
+            ${Object.entries(all_url_params).map(([key, value]) => `${key}: ${value}`).join('<br/>')}
+          </p>
+          ` : ''}
+        `,
       }),
     });
 

@@ -216,6 +216,38 @@
   box-shadow: 0 0 0 3px var(--moss-glow);
 }
 
+.inputError {
+  border-color: #d32f2f !important;
+  background: #ffebee !important;
+}
+
+.inputError:focus {
+  border-color: #d32f2f !important;
+  box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1) !important;
+}
+
+.errorText {
+  font-family: var(--font-raleway);
+  font-size: var(--text-sm);
+  color: #d32f2f;
+  margin-top: 4px;
+  line-height: var(--leading-normal);
+  font-weight: var(--weight-medium);
+}
+
+.errorAlert {
+  background: #ffebee;
+  border: 1px solid #d32f2f;
+  color: #d32f2f;
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  font-family: var(--font-raleway);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-normal);
+}
+
 .submitBtn {
   width: 100%;
   padding: 14px 24px;

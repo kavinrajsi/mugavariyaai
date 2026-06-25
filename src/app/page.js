@@ -117,39 +117,162 @@ function SignupForm({ onSuccess }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [honeypot, setHoneypot] = useState('');
+
+  const validateWord = (value) => {
+    if (!value.trim()) return 'Required';
+    const words = value.trim().split(/\s+/);
+    if (words.length > 2) return 'Maximum 2 words allowed';
+    if (words.some(w => w.length < 2)) return 'Each word must be at least 2 characters';
+    return '';
+  };
+
+  const validateName = (value) => {
+    if (!value.trim()) return 'Required';
+    if (value.trim().length < 2) return 'Name must be at least 2 characters';
+    if (value.trim().length > 50) return 'Name must be less than 50 characters';
+    return '';
+  };
+
+  const validateEmail = (value) => {
+    if (!value.trim()) return 'Required';
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(value)) return 'Please enter a valid email address';
+    return '';
+  };
+
+  const getUTMParams = () => {
+    if (typeof window === 'undefined') return {};
+    const params = new URLSearchParams(window.location.search);
+    return {
+      utm_source: params.get('utm_source') || null,
+      utm_medium: params.get('utm_medium') || null,
+      utm_campaign: params.get('utm_campaign') || null,
+      utm_content: params.get('utm_content') || null,
+      utm_term: params.get('utm_term') || null,
+    };
+  };
+
+  const getAllURLParams = () => {
+    if (typeof window === 'undefined') return {};
+    const params = new URLSearchParams(window.location.search);
+    const allParams = {};
+    params.forEach((value, key) => {
+      allParams[key] = value;
+    });
+    return allParams;
+  };
+
+  const getIPAddress = async () => {
+    try {
+      const response = await fetch('https://api.ipify.org?format=json');
+      const data = await response.json();
+      return data.ip;
+    } catch {
+      return null;
+    }
+  };
+
+  const getTrackingIds = () => {
+    if (typeof window === 'undefined') return { google_analytics_id: null, facebook_pixel_id: null };
+
+    const getCookie = (name) => {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+      return null;
+    };
+
+    const getLocalStorage = (key) => {
+      try {
+        return localStorage.getItem(key);
+      } catch {
+        return null;
+      }
+    };
+
+    return {
+      google_analytics_id: getCookie('_ga') || getLocalStorage('ga_id') || null,
+      facebook_pixel_id: getCookie('_fbp') || getCookie('_fbc') || getLocalStorage('fb_pixel_id') || null,
+    };
+  };
+
+  const handleFieldChange = (field, value) => {
+    if (field === 'word') setWord(value);
+    if (field === 'name') setName(value);
+    if (field === 'email') setEmail(value);
+
+    if (errors[field]) {
+      const newErrors = { ...errors };
+      delete newErrors[field];
+      setErrors(newErrors);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (honeypot) {
+      setState('success');
+      onSuccess(word);
+      return;
+    }
+
     const newErrors = {};
 
-    if (!word.trim()) newErrors.word = 'Required';
-    if (!name.trim()) newErrors.name = 'Required';
-    if (!email.trim()) {
-      newErrors.email = 'Required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      newErrors.email = 'Invalid email';
-    }
+    const wordError = validateWord(word);
+    if (wordError) newErrors.word = wordError;
+
+    const nameError = validateName(name);
+    if (nameError) newErrors.name = nameError;
+
+    const emailError = validateEmail(email);
+    if (emailError) newErrors.email = emailError;
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
 
+    setIsSubmitting(true);
     try {
+      const utmParams = getUTMParams();
+      const allURLParams = getAllURLParams();
+      const ipAddress = await getIPAddress();
+      const trackingIds = getTrackingIds();
+
       const response = await fetch('/api/submit-form', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ word, name, email }),
+        body: JSON.stringify({
+          word,
+          name,
+          email,
+          ip_address: ipAddress,
+          utm_source: utmParams.utm_source,
+          utm_medium: utmParams.utm_medium,
+          utm_campaign: utmParams.utm_campaign,
+          utm_content: utmParams.utm_content,
+          utm_term: utmParams.utm_term,
+          google_analytics_id: trackingIds.google_analytics_id,
+          facebook_pixel_id: trackingIds.facebook_pixel_id,
+          all_url_params: allURLParams,
+          timestamp: new Date().toISOString(),
+        }),
       });
 
       if (response.ok) {
         setState('success');
         onSuccess(word);
       } else {
-        setErrors({ submit: 'Failed to submit. Please try again.' });
+        const data = await response.json().catch(() => ({}));
+        setErrors({ submit: data.message || 'Failed to submit. Please try again.' });
       }
     } catch (error) {
       setErrors({ submit: 'Network error. Please try again.' });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -167,41 +290,57 @@ function SignupForm({ onSuccess }) {
   return (
     <form className={styles.formContainer} onSubmit={handleSubmit}>
       <h2 className={styles.formTitle}>வீடுன்னா என்ன?</h2>
-      {errors.submit && <p style={{ color: '#E4A025', marginBottom: '16px' }}>{errors.submit}</p>}
+      {errors.submit && <div className={styles.errorAlert}>{errors.submit}</div>}
+      <input
+        type="text"
+        name="website"
+        value={honeypot}
+        onChange={(e) => setHoneypot(e.target.value)}
+        style={{ display: 'none' }}
+        tabIndex="-1"
+        autoComplete="off"
+        aria-hidden="true"
+      />
       <div className={styles.formGroup}>
         <div className={styles.inputWrapper}>
           <label className={styles.inputLabel}>Your answer (1-2 words)</label>
           <input
-            className={styles.input}
+            className={`${styles.input} ${errors.word ? styles.inputError : ''}`}
             type="text"
             placeholder="e.g., நிம்மதி, அன்பு, கனவு"
             value={word}
-            onChange={(e) => setWord(e.target.value)}
+            onChange={(e) => handleFieldChange('word', e.target.value)}
+            aria-invalid={!!errors.word}
           />
+          {errors.word && <p className={styles.errorText}>{errors.word}</p>}
         </div>
         <div className={styles.inputWrapper}>
           <label className={styles.inputLabel}>Your name</label>
           <input
-            className={styles.input}
+            className={`${styles.input} ${errors.name ? styles.inputError : ''}`}
             type="text"
             placeholder="Name"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => handleFieldChange('name', e.target.value)}
+            aria-invalid={!!errors.name}
           />
+          {errors.name && <p className={styles.errorText}>{errors.name}</p>}
         </div>
         <div className={styles.inputWrapper}>
           <label className={styles.inputLabel}>Email</label>
           <input
-            className={styles.input}
+            className={`${styles.input} ${errors.email ? styles.inputError : ''}`}
             type="email"
             placeholder="your@email.com"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => handleFieldChange('email', e.target.value)}
+            aria-invalid={!!errors.email}
           />
+          {errors.email && <p className={styles.errorText}>{errors.email}</p>}
         </div>
       </div>
-      <button className={styles.submitBtn} type="submit">
-        Join the journey <ArrowRight size={20} />
+      <button className={styles.submitBtn} type="submit" disabled={isSubmitting}>
+        {isSubmitting ? 'Joining...' : <>Join the journey <ArrowRight size={20} /></>}
       </button>
     </form>
   );
