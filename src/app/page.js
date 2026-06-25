@@ -42,7 +42,7 @@ function TaglineRotator() {
           { text: '' },
           {
             text: tagline,
-            duration: 1.2,
+            duration: 3.5,
             ease: 'none'
           }
         );
@@ -65,7 +65,7 @@ function TaglineRotator() {
             typeText(indexRef.current);
           }
         });
-      }, 3500);
+      }, 6500);
 
       return () => clearInterval(interval);
     }, containerRef);
