@@ -31,25 +31,22 @@ function TaglineRotator() {
     const ctx = gsap.context(() => {
       const typeText = (index) => {
         const tagline = TAGLINES[index];
-        el.innerHTML = `<h1 class="${styles.tagline}"></h1>`;
+        const words = tagline.split(' ');
+        const taglineWithBreak = `${words[0]}<br/>${words[1]}`;
+
+        el.innerHTML = `<h1 class="${styles.tagline}">${taglineWithBreak}</h1>`;
         const heading = el.querySelector('h1');
 
         if (prefersReduced) {
-          const words = tagline.split(' ');
-          heading.innerHTML = `${words[0]}<br/>${words[1]}`;
           return;
         }
 
         gsap.fromTo(heading,
           { text: '' },
           {
-            text: tagline,
+            text: taglineWithBreak,
             duration: 3.5,
-            ease: 'none',
-            onComplete: () => {
-              const words = tagline.split(' ');
-              heading.innerHTML = `${words[0]}<br/>${words[1]}`;
-            }
+            ease: 'none'
           }
         );
       };
