@@ -1,0 +1,332 @@
+/* Hero Section */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 24px;
+  text-align: center;
+  background: var(--ink);
+}
+
+.taglineContainer {
+  position: relative;
+  height: 140px;
+  margin-bottom: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tagline {
+  font-family: var(--font-noto-tamil);
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  font-weight: 600;
+  color: var(--jasmine);
+  line-height: 1.1;
+  position: absolute;
+  transition: opacity 0.6s ease-in-out;
+}
+
+.subtitle {
+  font-family: var(--font-cormorant);
+  font-size: clamp(1.2rem, 4vw, 2rem);
+  font-style: italic;
+  color: var(--jasmine);
+  margin: 24px 0 48px;
+  max-width: 600px;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.ctaScroll {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  background: var(--gold);
+  color: var(--ink);
+  border: none;
+  border-radius: 4px;
+  font-family: var(--font-geist-sans);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 40px 0;
+}
+
+.ctaScroll:hover {
+  background: #d4a535;
+  transform: translateY(-2px);
+}
+
+.countdownSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: 40px;
+}
+
+.countdown {
+  font-family: var(--font-cormorant);
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--gold);
+  letter-spacing: 4px;
+}
+
+.countdownLabel {
+  font-family: var(--font-geist-sans);
+  font-size: 1rem;
+  color: var(--jasmine);
+  letter-spacing: 1px;
+}
+
+/* Kolam Divider */
+.kolamContainer {
+  padding: 80px 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--ink);
+}
+
+.kolamSvg {
+  width: 100%;
+  max-width: 900px;
+  height: auto;
+}
+
+.kolamStroke {
+  stroke: var(--gold);
+  stroke-width: 1.5;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: drawStroke 2s ease-out forwards;
+  opacity: 0;
+}
+
+.kolamDot {
+  fill: var(--gold);
+  animation: dotAppear 1.5s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes drawStroke {
+  from {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    opacity: 1;
+  }
+  to {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes dotAppear {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Form Section */
+.formSection {
+  padding: 80px 24px;
+  background: var(--moss);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 500px;
+}
+
+.formContainer {
+  width: 100%;
+  max-width: 500px;
+}
+
+.formTitle {
+  font-family: var(--font-noto-tamil);
+  font-size: clamp(1.8rem, 5vw, 2.5rem);
+  font-weight: 600;
+  color: var(--jasmine);
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.inputLabel {
+  font-family: var(--font-geist-sans);
+  font-size: 0.9rem;
+  color: var(--jasmine);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+.input {
+  padding: 12px 16px;
+  background: var(--mist);
+  border: 1px solid var(--gold);
+  color: var(--jasmine);
+  font-family: var(--font-geist-sans);
+  font-size: 1rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.input::placeholder {
+  color: rgba(245, 230, 200, 0.4);
+}
+
+.input:focus {
+  outline: none;
+  background: rgba(245, 230, 200, 0.12);
+  border-color: var(--violet);
+  box-shadow: 0 0 0 3px rgba(123, 79, 158, 0.1);
+}
+
+.submitBtn {
+  width: 100%;
+  padding: 14px 24px;
+  background: var(--gold);
+  color: var(--ink);
+  border: none;
+  border-radius: 4px;
+  font-family: var(--font-geist-sans);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.submitBtn:hover {
+  background: #d4a535;
+  transform: translateY(-2px);
+}
+
+.submitBtn:active {
+  transform: translateY(0);
+}
+
+.submitBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Success State */
+.successMessage {
+  text-align: center;
+  padding: 40px 24px;
+}
+
+.successHeading {
+  font-family: var(--font-noto-tamil);
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  color: var(--gold);
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.successSubtitle {
+  font-family: var(--font-geist-sans);
+  font-size: 1.1rem;
+  color: var(--jasmine);
+  line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero {
+    padding: 40px 20px;
+  }
+
+  .taglineContainer {
+    height: 100px;
+    margin-bottom: 32px;
+  }
+
+  .ctaScroll {
+    margin: 24px 0;
+  }
+
+  .kolamContainer {
+    padding: 60px 20px;
+  }
+
+  .formSection {
+    padding: 60px 20px;
+  }
+
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 32px 16px;
+    min-height: 80vh;
+  }
+
+  .taglineContainer {
+    height: 80px;
+    margin-bottom: 24px;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    margin: 16px 0 32px;
+  }
+
+  .ctaScroll {
+    font-size: 0.95rem;
+    padding: 10px 20px;
+    margin: 20px 0;
+  }
+
+  .countdown {
+    font-size: 2rem;
+  }
+
+  .kolamContainer {
+    padding: 40px 16px;
+  }
+
+  .formSection {
+    padding: 40px 16px;
+    min-height: auto;
+  }
+
+  .formTitle {
+    font-size: 1.5rem;
+    margin-bottom: 24px;
+  }
+
+  .formGroup {
+    gap: 16px;
+  }
+}
