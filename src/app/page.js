@@ -459,7 +459,8 @@ export default function Home() {
       <section className={styles.hero}>
         <TaglineRotator />
         <div className={styles.subtitle}>
-          Every home has a story. We're getting ready to share ours.
+          Every home has a story.<br />
+          We're getting ready to share ours.
         </div>
         <button className={styles.ctaScroll} onClick={handleScroll}>
           Join the journey <ArrowDown size={20} aria-hidden="true" />

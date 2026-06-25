@@ -38,6 +38,7 @@
   max-width: 600px;
   line-height: var(--leading-relaxed);
   font-weight: var(--weight-regular);
+  display: inline-block;
 }
 
 .ctaScroll {
@@ -79,6 +80,7 @@
   color: var(--gold);
   letter-spacing: var(--tracking-wider);
   line-height: var(--leading-tight);
+  white-space: nowrap;
 }
 
 .countdownLabel {
