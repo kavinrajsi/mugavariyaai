@@ -24,8 +24,8 @@
   font-size: var(--text-display);
   font-weight: var(--weight-semibold);
   color: var(--ink);
-  line-height: var(--leading-tight);
-  position: absolute;
+  line-height: 125%;
+  position: relative;
   will-change: transform, opacity;
   margin: 0;
 }
