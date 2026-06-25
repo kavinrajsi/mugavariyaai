@@ -14,7 +14,7 @@ export default function PrivacyPolicy() {
 
           <h2>1. Introduction</h2>
           <p>
-            Mugavariyai ("we," "us," "our," or "Company") is committed to protecting your privacy.
+            Mugavariyai (&quot;we,&quot; &quot;us,&quot; &quot;our,&quot; or &quot;Company&quot;) is committed to protecting your privacy.
             This Privacy Policy explains how we collect, use, disclose, and safeguard your information
             when you visit our website.
           </p>
@@ -76,7 +76,7 @@ export default function PrivacyPolicy() {
           <h2>8. Changes to This Policy</h2>
           <p>
             We may update this Privacy Policy from time to time. We will notify you of any changes
-            by updating the "Last updated" date above.
+            by updating the &quot;Last updated&quot; date above.
           </p>
         </div>
       </div>

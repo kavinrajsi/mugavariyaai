@@ -55,8 +55,8 @@ export default function CookiePolicy() {
 
           <h2>4. How Long Do Cookies Last?</h2>
           <p>
-            Cookies can be either "session" cookies (deleted when you close your browser) or
-            "persistent" cookies (stored on your device until they expire or you delete them).
+            Cookies can be either &quot;session&quot; cookies (deleted when you close your browser) or
+            &quot;persistent&quot; cookies (stored on your device until they expire or you delete them).
           </p>
 
           <h2>5. Your Cookie Choices</h2>
@@ -75,7 +75,7 @@ export default function CookiePolicy() {
 
           <h2>6. Do Not Track (DNT)</h2>
           <p>
-            Some browsers include a "Do Not Track" feature. Currently, there is no industry standard for recognizing DNT signals.
+            Some browsers include a &quot;Do Not Track&quot; feature. Currently, there is no industry standard for recognizing DNT signals.
             We do not respond to DNT browser signals, but you can use other tools to control cookie collection.
           </p>
 
@@ -91,7 +91,7 @@ export default function CookiePolicy() {
           <h2>8. Updates to This Policy</h2>
           <p>
             We may update this Cookie Policy from time to time to reflect changes in our practices or for other operational,
-            legal, or regulatory reasons. We will notify you by updating the "Last updated" date above.
+            legal, or regulatory reasons. We will notify you by updating the &quot;Last updated&quot; date above.
           </p>
 
           <h2>9. Contact Us</h2>
