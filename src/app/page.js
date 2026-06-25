@@ -124,6 +124,7 @@ function SignupForm({ onSuccess }) {
 
   const validateWord = (value) => {
     if (!value.trim()) return 'Required';
+    if (!/^[a-zA-Z\s]+$/.test(value)) return 'Answer must contain only letters and spaces';
     const words = value.trim().split(/\s+/);
     if (words.length > 2) return 'Maximum 2 words allowed';
     if (words.some(w => w.length < 2)) return 'Each word must be at least 2 characters';
@@ -248,7 +249,10 @@ function SignupForm({ onSuccess }) {
   };
 
   const handleFieldChange = (field, value) => {
-    if (field === 'word') setWord(value);
+    if (field === 'word') {
+      const sanitized = value.replace(/[^a-zA-Z\s]/g, '');
+      setWord(sanitized);
+    }
     if (field === 'name') {
       const sanitized = value.replace(/[^a-zA-Z\s]/g, '');
       setName(sanitized);

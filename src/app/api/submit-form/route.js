@@ -77,6 +77,10 @@ export async function POST(request) {
       return Response.json({ error: 'Missing fields' }, { status: 400 });
     }
 
+    if (!/^[a-zA-Z\s]+$/.test(word)) {
+      return Response.json({ error: 'Answer must contain only letters and spaces' }, { status: 400 });
+    }
+
     if (name.trim().length < 4) {
       return Response.json({ error: 'Name must be at least 4 characters' }, { status: 400 });
     }
