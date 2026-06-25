@@ -438,18 +438,22 @@
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 32px;
+  display: flex;
   align-items: center;
+  gap: 32px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .footerLeft {
-  text-align: left;
+  text-align: center;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .footerRight {
-  text-align: right;
+  text-align: center;
+  flex-shrink: 0;
 }
 
 .footerCopyright {
@@ -538,15 +542,19 @@
   }
 
   .footerContent {
-    grid-template-columns: 1fr;
-    gap: 16px;
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
   }
 
   .footerLeft {
+    order: 1;
     text-align: center;
+    white-space: normal;
   }
 
   .footerRight {
+    order: 2;
     text-align: center;
   }
 
@@ -560,20 +568,20 @@
   }
 
   .footerPoliciesList li:not(:last-child)::after {
-    content: '·';
-    margin: 0 8px;
-    color: var(--ink);
-    opacity: 0.3;
+    content: ' ';
+    margin: 0;
   }
 
   .footerPolicyLink {
     font-size: var(--text-sm);
-    display: block;
   }
 
   .footerCredit {
-    padding-top: 12px;
-    margin-top: 12px;
+    order: 3;
+    text-align: center;
+    padding-top: 0;
+    margin-top: 0;
+    border-top: none;
   }
 
   .footerMadeBy {
