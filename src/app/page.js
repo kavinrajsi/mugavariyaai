@@ -442,7 +442,7 @@ function SignupForm() {
         </div>
       </div>
       <button className={styles.submitBtn} type="submit" disabled={isSubmitting}>
-        {isSubmitting ? 'Joining...' : <>Join the journey <ArrowRight size={20} aria-hidden="true" /></>}
+        {isSubmitting ? 'Joining...' : <>Submit <ArrowRight size={20} aria-hidden="true" /></>}
       </button>
     </form>
   );
