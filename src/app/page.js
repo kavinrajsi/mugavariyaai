@@ -461,7 +461,7 @@ export default function Home() {
         <TaglineRotator />
         <div className={styles.subtitle}>
           Every home has a story.<br />
-          We're getting ready to share ours.
+          We&apos;re getting ready to share ours.
         </div>
         <CountdownTimer />
         <button className={styles.ctaScroll} onClick={handleScroll}>
@@ -473,8 +473,6 @@ export default function Home() {
       <section className={styles.formSection}>
         <SignupForm />
       </section>
-
-      {/* Footer */}
       <Footer />
     </>
   );
