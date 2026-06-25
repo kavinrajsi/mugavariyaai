@@ -26,8 +26,8 @@ function TaglineRotator() {
     const ctx = gsap.context(() => {
       const typeText = (index) => {
         const tagline = TAGLINES[index];
-        const chars = tagline.split('');
-        el.innerHTML = chars.map(c => `<span class="${styles.taglineChar}">${c}</span>`).join('');
+        const words = tagline.split(' ');
+        el.innerHTML = words.map(w => `<span class="${styles.taglineWord}">${w}</span>`).join(' ');
         const spans = el.querySelectorAll('span');
 
         if (prefersReduced) {
@@ -36,8 +36,8 @@ function TaglineRotator() {
         }
 
         gsap.fromTo(spans,
-          { opacity: 0 },
-          { opacity: 1, stagger: 0.03, duration: 0.1, ease: 'none' }
+          { opacity: 0, y: 10 },
+          { opacity: 1, y: 0, stagger: 0.08, duration: 0.4, ease: 'power2.out' }
         );
       };
 
@@ -52,13 +52,13 @@ function TaglineRotator() {
         }
 
         gsap.to(spans, {
-          opacity: 0, stagger: 0.02, duration: 0.08, ease: 'none',
+          opacity: 0, y: -10, stagger: 0.05, duration: 0.3, ease: 'power2.in',
           onComplete: () => {
             indexRef.current = (indexRef.current + 1) % TAGLINES.length;
             typeText(indexRef.current);
           }
         });
-      }, 4000);
+      }, 3500);
 
       return () => clearInterval(interval);
     }, containerRef);
