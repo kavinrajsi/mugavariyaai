@@ -123,8 +123,8 @@ npm run lint       # Run ESLint
 - **On serverless**: In-memory counter resets on cold starts — migrate to persistent storage for production
 
 ### OG Image
-- Referenced as `public/og-image.png` (1200×630px)
-- **Currently missing** — add this file for social card previews
+- Located at `public/og-image.png` (1200×630px)
+- Referenced in OG and Twitter card metadata in `src/app/layout.js`
 
 ### Development Guidelines
 - Use CSS Modules only (no Tailwind)

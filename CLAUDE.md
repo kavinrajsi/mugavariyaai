@@ -23,7 +23,7 @@ See `.env.local.example` for template.
 
 ### Critical Files
 - `submission_counter.json` — Live counter persisting submissions (do NOT delete)
-- `public/og-image.png` — Missing, referenced in OG metadata (1200×630px needed for social cards)
+- `public/og-image.png` — Social card image (1200×630px), referenced in OG/Twitter metadata in `layout.js`
 - `src/app/page.js` — Main page (TaglineRotator, CountdownTimer, SignupForm)
 - `src/app/api/submit-form/route.js` — Form handler with rate limiting, validation, email
 - `.env.local` — Must be present for local dev (not committed)
