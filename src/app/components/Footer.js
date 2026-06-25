@@ -7,11 +7,13 @@ export default function Footer() {
   return (
     <footer className={styles.footer}>
       <div className={styles.footerContent}>
-        <p className={styles.footerCopyright}>
-          © {new Date().getFullYear()} Visvas. All rights reserved.
-        </p>
+        <div className={styles.footerLeft}>
+          <p className={styles.footerCopyright}>
+            © {new Date().getFullYear()} Visvas. All rights reserved.
+          </p>
+        </div>
 
-        <nav className={styles.footerPolicies}>
+        <nav className={styles.footerRight}>
           <ul className={styles.footerPoliciesList}>
             <li><Link href="/privacy" className={styles.footerPolicyLink}>Privacy Policy</Link></li>
             <li><Link href="/terms" className={styles.footerPolicyLink}>Terms & Conditions</Link></li>
