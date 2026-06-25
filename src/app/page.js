@@ -10,13 +10,13 @@ import Footer from './components/Footer';
 gsap.registerPlugin(TextPlugin);
 
 const TAGLINES = [
-  'நிம்மதியின் முகவரியாய் ...',
-  'மகிழ்ச்சியின் முகவரியாய் ...',
-  'அன்பின் முகவரியாய் ...',
-  'கனவுகளின் முகவரியாய் ...',
-  'அக்கறையின் முகவரியாய் ...',
-  'ஒற்றுமையின் முகவரியாய் ...',
-  'மதுரையின் முகவரியாய் ...',
+  'நிம்மதியின் முகவரியாய்',
+  'மகிழ்ச்சியின் முகவரியாய்',
+  'அன்பின் முகவரியாய்',
+  'கனவுகளின் முகவரியாய்',
+  'அக்கறையின் முகவரியாய்',
+  'ஒற்றுமையின் முகவரியாய்',
+  'மதுரையின் முகவரியாய்',
 ];
 
 function TaglineRotator() {
@@ -344,7 +344,7 @@ function SignupForm() {
       <div className={styles.successMessage}>
         <h2 className={styles.successHeading}>உங்கள் வார்த்தை பதிவாகிவிட்டது</h2>
         <p className={styles.successSubtitle}>
-          Your word has been noted. We'll open the door soon.
+          Your word has been noted. We&apos;ll open the door soon.
         </p>
         <p className={styles.successCount}>
           {submissionCount} curious minds joined
@@ -463,10 +463,10 @@ export default function Home() {
           Every home has a story.<br />
           We're getting ready to share ours.
         </div>
+        <CountdownTimer />
         <button className={styles.ctaScroll} onClick={handleScroll}>
           Join the journey <ArrowDown size={20} aria-hidden="true" />
         </button>
-        <CountdownTimer />
       </section>
 
       {/* Form */}
