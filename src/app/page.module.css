@@ -1,6 +1,5 @@
 /* Hero Section */
 .hero {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -8,6 +7,7 @@
   padding: 60px 24px;
   text-align: center;
   background: var(--ink);
+  min-height: 100vh;
 }
 
 .taglineContainer {
@@ -143,12 +143,11 @@
 
 /* Form Section */
 .formSection {
-  padding: 80px 24px;
-  background: var(--moss);
+  padding: 60px 24px;
+  background: inherit;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 500px;
 }
 
 .formContainer {

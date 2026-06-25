@@ -142,7 +142,6 @@ export default function Home() {
 
   const handleScroll = (e) => {
     e.preventDefault();
-    document.querySelector(`.${styles.formSection}`)?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -170,10 +169,6 @@ export default function Home() {
           Join the journey ↓
         </button>
         <CountdownTimer />
-      </section>
-
-      {/* Form */}
-      <section className={styles.formSection}>
         <SignupForm onSuccess={setSubmittedWord} />
       </section>
     </>
