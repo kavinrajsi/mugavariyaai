@@ -30,6 +30,20 @@ export default function Footer() {
           </ul>
         </nav>
       </div>
+
+      <div className={styles.footerCredit}>
+        <p className={styles.footerMadeBy}>
+          Made by{' '}
+          <a
+            href="https://madarth.com?utm_source=mugavariyai&utm_medium=footer&utm_campaign=credit"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.footerMadarth}
+          >
+            Madarth
+          </a>
+        </p>
+      </div>
     </footer>
   );
 }

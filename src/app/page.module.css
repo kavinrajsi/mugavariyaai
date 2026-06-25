@@ -505,6 +505,32 @@
   color: var(--moss);
 }
 
+.footerCredit {
+  text-align: center;
+  padding-top: 16px;
+  margin-top: 16px;
+  border-top: 1px solid rgba(26, 26, 46, 0.1);
+}
+
+.footerMadeBy {
+  font-family: var(--font-raleway);
+  font-size: var(--text-sm);
+  color: var(--ink);
+  line-height: var(--leading-normal);
+  margin: 0;
+}
+
+.footerMadarth {
+  color: var(--ink);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  font-weight: var(--weight-semibold);
+}
+
+.footerMadarth:hover {
+  color: var(--moss);
+}
+
 @media (max-width: 768px) {
   .footer {
     padding: 24px 16px;
@@ -542,5 +568,18 @@
   .footerPolicyLink {
     font-size: var(--text-sm);
     display: block;
+  }
+
+  .footerCredit {
+    padding-top: 12px;
+    margin-top: 12px;
+  }
+
+  .footerMadeBy {
+    font-size: var(--text-sm);
+  }
+
+  .footerMadarth {
+    font-size: var(--text-sm);
   }
 }
