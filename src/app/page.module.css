@@ -460,6 +460,17 @@
   margin: 0;
 }
 
+.footerBrandLink {
+  color: var(--ink);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  font-weight: var(--weight-semibold);
+}
+
+.footerBrandLink:hover {
+  color: var(--moss);
+}
+
 .footerPoliciesList {
   list-style: none;
   display: flex;

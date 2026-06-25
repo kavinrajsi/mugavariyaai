@@ -9,7 +9,16 @@ export default function Footer() {
       <div className={styles.footerContent}>
         <div className={styles.footerLeft}>
           <p className={styles.footerCopyright}>
-            © {new Date().getFullYear()} Visvas. All rights reserved.
+            © {new Date().getFullYear()}{' '}
+            <a
+              href="https://visvas.in?utm_source=mugavariyai&utm_medium=footer&utm_campaign=landing"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.footerBrandLink}
+            >
+              Visvas
+            </a>
+            . All rights reserved.
           </p>
         </div>
 
