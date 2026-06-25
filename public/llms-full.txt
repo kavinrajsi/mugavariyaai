@@ -1,0 +1,397 @@
+# Mugavariyai - Full LLM Documentation
+# Complete information for Large Language Models, AI bots, and web crawlers
+
+## 1. Website Overview
+
+### Name
+Mugavariyai
+
+### Tagline
+Every home has a story. We're getting ready to share ours.
+
+### Primary URL
+https://mugavariyai.com
+
+### Description
+Mugavariyai (முகவரியாய்) is a Tamil word meaning "address" or "as an address". This platform celebrates the concept of home and community by inviting people to share their words, stories, and connections.
+
+## 2. Content and Structure
+
+### Main Page (/index)
+- Hero section with animated typewriter effect tagline
+- Countdown timer (launches July 4, 2026)
+- Call-to-action: "Join the journey"
+- Community counter showing participation
+- Form section for submissions
+
+### Navigation
+- Single-page application
+- Smooth scroll to form section
+- Direct submission at form area
+
+### Available Routes
+- / (root) - Main landing page
+- /api/submit-form - Form submission endpoint
+
+## 3. Form Submissions
+
+### Form Fields
+1. **Your answer (1-2 words)**
+   - Language: Can include Tamil or English
+   - Validation: Letters and spaces only, 2-50 characters
+   - Required: Yes
+
+2. **Your name**
+   - Validation: Letters and spaces only, 4-50 characters
+   - Required: Yes
+
+3. **Email**
+   - Type: Email address
+   - Validation: Valid email format
+   - Required: Yes
+
+### Submission Data Collected
+The following data is collected on each form submission:
+
+#### User Information
+- word (user's answer)
+- name (user's name)
+- email (user's email)
+
+#### Technical Data
+- ip_address (IP address via ipify.org)
+- timestamp (ISO format submission time)
+
+#### Traffic Attribution
+- utm_source (UTM source parameter)
+- utm_medium (UTM medium parameter)
+- utm_campaign (UTM campaign parameter)
+- utm_content (UTM content parameter)
+- utm_term (UTM term parameter)
+- all_url_params (all query parameters from URL)
+
+#### Analytics IDs
+- google_analytics_id (from _ga cookie)
+- facebook_pixel_id (from _fbp/_fbc cookie)
+
+#### Referrer Information
+- referrer (full referrer URL)
+- referrer_source (source type: google_organic, facebook_referral, etc.)
+- is_organic_traffic (boolean: true if organic search)
+- referrer_hostname (hostname of referrer)
+
+#### Counter
+- submission_count (incremental counter starting at 101)
+
+## 4. Submission Counter
+
+- **Initial Value**: 101
+- **Increment**: +1 per submission
+- **Display**: "N curious minds joined" message shown after submission
+- **Persistence**: Stored in submission_counter.json on server
+
+## 5. Analytics Tracking
+
+### Referrer Sources Detected
+- google_organic (Google search)
+- bing_organic (Bing search)
+- duckduckgo_organic (DuckDuckGo search)
+- yahoo_organic (Yahoo search)
+- facebook_referral (Facebook referral)
+- twitter_referral (Twitter referral)
+- linkedin_referral (LinkedIn referral)
+- instagram_referral (Instagram referral)
+- reddit_referral (Reddit referral)
+- direct (direct access)
+- referral (generic referral)
+
+### Supported Analytics Platforms
+- Google Analytics (GA ID from _ga cookie)
+- Facebook Pixel (Pixel ID from _fbp/_fbc cookies)
+- UTM tracking (standard UTM parameters)
+
+## 6. Technology Stack
+
+### Frontend
+- React 19.2.4
+- Next.js 16.2.9
+- GSAP 3.15.0 (animations)
+- Lucide React (icons)
+- CSS Modules (styling)
+
+### Backend
+- Next.js API Routes
+- Zepto Mail (email service)
+- Node.js 24 LTS
+
+### Styling
+- CSS Variables
+- Design tokens (colors, typography, spacing)
+- Color Scheme: Jasmine, Moss, Gold, Ink
+
+### Animation
+- GSAP TextPlugin for typewriter effects
+- Smooth scroll animations
+- Fade transitions
+
+## 7. API Endpoints
+
+### POST /api/submit-form
+Submits form data and sends confirmation emails.
+
+**Request Body:**
+```json
+{
+  "word": "string",
+  "name": "string",
+  "email": "string",
+  "ip_address": "string",
+  "utm_source": "string|null",
+  "utm_medium": "string|null",
+  "utm_campaign": "string|null",
+  "utm_content": "string|null",
+  "utm_term": "string|null",
+  "google_analytics_id": "string|null",
+  "facebook_pixel_id": "string|null",
+  "referrer": "string|null",
+  "referrer_source": "string|null",
+  "is_organic_traffic": "boolean",
+  "referrer_hostname": "string|null",
+  "all_url_params": "object",
+  "timestamp": "ISO string"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "submission_count": 101
+}
+```
+
+**Error Response:**
+```json
+{
+  "error": "error message",
+  "status": 400
+}
+```
+
+## 8. Validation Rules
+
+### Answer Field (Your answer)
+- Required: Yes
+- Type: Text (alphabetic + spaces)
+- Min length: 2 characters
+- Max length: 50 characters
+- Pattern: [a-zA-Z\s]+
+- Word count: 1-2 words
+
+### Name Field (Your name)
+- Required: Yes
+- Type: Text (alphabetic + spaces)
+- Min length: 4 characters
+- Max length: 50 characters
+- Pattern: [a-zA-Z\s]+
+
+### Email Field
+- Required: Yes
+- Type: Email
+- Max length: 100 characters
+- Pattern: Standard email regex
+
+### Honeypot
+- Field name: website
+- Purpose: Spam prevention
+- Hidden from users
+- If filled: Silent rejection (appears successful to prevent bot detection)
+
+## 9. Error Handling
+
+### Client-Side Validation
+- Real-time field validation
+- Visual error indicators (red borders)
+- Error messages displayed below fields
+- Field-level error clearing
+
+### Server-Side Validation
+- Field presence validation
+- Format validation
+- Character type validation
+- Length validation
+- Email validation
+
+### Error Messages
+- Displayed below input fields
+- Clear, user-friendly language
+- Specific to validation rule violated
+- Support for accessibility
+
+## 10. Localization
+
+### Languages Supported
+- English (primary)
+- Tamil (cultural)
+
+### Tamil Content
+- Taglines in Tamil: "நிம்மதியின் முகவரியாய்" (Peaceful address), etc.
+- Form labels: "வீடுன்னா என்ன?" (What is home?)
+- Success message: "உங்கள் வார்த்தை பதிவாகிவிட்டது" (process.env.EMAIL_SUBJECT)
+
+### Character Support
+- UTF-8 encoding for Tamil script
+- Support for both Latin and Tamil scripts in submissions
+
+## 11. Performance Characteristics
+
+### Load Time
+- Server: ~200-400ms
+- Total: ~3-4 seconds (with external API calls)
+
+### Animations
+- Typewriter effect: ~3.5 seconds per tagline
+- Tagline rotation: ~6.5 seconds total
+- Fade transitions: ~0.3 seconds
+
+### API Response Times
+- Form submission: ~1.5-2 seconds
+- Email sending: ~2-3 seconds
+
+## 12. Browser Support
+
+### Supported
+- Chrome/Edge 90+
+- Firefox 88+
+- Safari 14+
+- Mobile browsers (iOS Safari, Chrome Mobile)
+
+### Features
+- HTML5 validation
+- CSS Grid/Flexbox
+- ES6+ JavaScript
+- Fetch API
+
+## 13. Accessibility
+
+### WCAG Compliance
+- Semantic HTML
+- ARIA labels (aria-invalid, aria-hidden)
+- Color contrast ratios meet standards
+- Keyboard navigation support
+
+### Features
+- Focus management
+- Error announcements
+- Reduced motion support (prefers-reduced-motion)
+- Label associations
+- Tab order management
+
+## 14. Security Considerations
+
+### Data Protection
+- Email transmission via Zoho Zepto (encrypted)
+- Form validation (client and server)
+- Honeypot field for spam prevention
+- IP logging for analytics
+
+### No Data Selling
+- User data is collected for analytics only
+- Not shared with third parties
+- Used for community engagement metrics
+
+### GDPR Compliance
+- Email collection for form submission
+- IP address collection for analytics
+- User consent implicit via submission
+- Data retention policy: Not specified (contact site)
+
+## 15. Metadata
+
+### SEO Information
+- Title: Mugavariyai - Home Awaits
+- Description: Every home has a story. We're getting ready to share ours.
+- Open Graph: Standard meta tags included
+- Structured Data: Basic metadata
+
+### Robots Instructions
+- robots.txt: All bots allowed
+- AI Bot Access: Explicitly permitted
+- Crawl Frequency: No restrictions
+
+## 16. Bot Access Policy
+
+### Allowed AI/LLM Bots
+- ✅ GPTBot (OpenAI)
+- ✅ CCBot (Common Crawl)
+- ✅ anthropic-ai (Anthropic)
+- ✅ Claude-Web (Anthropic)
+- ✅ Googlebot
+- ✅ Bingbot
+- ✅ DuckDuckBot
+- ✅ Baiduspider
+- ✅ Yandexbot
+- ✅ Any other bot (User-agent: *)
+
+### Access Method
+- robots.txt: Fully allow
+- Rate limiting: None specified
+- Crawl delay: None specified
+
+### Disallowed
+- None (all bots welcome)
+
+## 17. File Locations
+
+- robots.txt: /robots.txt
+- sitemap.xml: /sitemap.xml
+- llms.txt: /llms.txt
+- llms-full.txt: /llms-full.txt
+- ai.txt: /ai.txt
+
+## 18. Contact Information
+
+### Website
+- URL: https://mugavariyai.com
+- Type: Community platform
+- Launch Date: July 4, 2026 (planned)
+
+### Support
+- Form submission feedback
+- Community engagement metrics
+- Analytics dashboard (internal)
+
+## 19. Update History
+
+### 2026-06-25
+- Initial documentation
+- Form validation system
+- Analytics tracking
+- Counter implementation
+- HTML5 validation
+- Error message system
+
+## 20. Additional Notes
+
+### Purpose
+Mugavariyai aims to create a inclusive community space where diverse voices can contribute to defining what "home" means across cultures and languages.
+
+### Community Engagement
+- 100+ initial community members (starting count: 101)
+- Multi-language support for submissions
+- Real-time engagement metrics
+- Community-driven content
+
+### Future Roadmap
+- Doors "open" on July 4, 2026
+- Community stories showcase
+- Cultural exchange platform
+- Multi-language content support
+
+---
+
+**For AI and LLM Developers:**
+This website is fully accessible to AI bots and LLMs. All data is public and can be used for training, analysis, or indexing purposes. Please refer to robots.txt for crawling guidelines.
+
+**Last Updated:** 2026-06-25
+**Version:** 1.0

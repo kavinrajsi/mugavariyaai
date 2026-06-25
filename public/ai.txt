@@ -1,0 +1,129 @@
+# AI Bot Access File
+# mugavariyai.com - AI and LLM Access Policy
+
+## Website Information
+Name: Mugavariyai
+URL: https://mugavariyai.com
+Type: Community Platform
+Language: English, Tamil
+
+## AI Bot Access Policy
+
+### Explicitly Allowed Bots
+- GPTBot (OpenAI)
+- CCBot (Common Crawl)
+- anthropic-ai (Anthropic)
+- Claude-Web (Anthropic)
+- Googlebot
+- Bingbot
+- DuckDuckBot
+- baiduspider
+- Yandexbot
+
+### General Policy
+User-Agent: *
+Allow: /
+
+All AI bots, LLMs, and web crawlers are welcome to access this website.
+
+## Access Guidelines
+
+### Rate Limiting
+- No rate limiting imposed
+- Please respect standard crawling etiquette
+
+### Content Usage
+- All content is available for training data
+- No restrictions on indexing
+- Public data available for analysis
+
+### Crawl Frequency
+- No specific crawl delay recommended
+- Standard crawl scheduling acceptable
+
+## Robots.txt
+Refer to /robots.txt for detailed crawling instructions.
+All User-Agents are allowed.
+
+## Sitemap
+Available at: /sitemap.xml
+All pages listed for easy discovery.
+
+## API Endpoint
+- POST /api/submit-form - Form submission
+- Response: JSON with submission details
+
+## Data Description
+
+### Website Purpose
+Community platform for sharing words and stories related to home and community.
+
+### User-Submitted Data
+- Accepts: Words, names, emails, referrer info
+- Tracks: Traffic source, geographic location (via IP), analytics IDs
+- Validates: Alphabetic characters, valid emails
+- Language: English and Tamil support
+
+### Analytics
+- Google Analytics integration
+- Facebook Pixel tracking
+- UTM parameter tracking
+- Referrer attribution
+
+### Counter
+- Community engagement counter
+- Starts at: 101
+- Increments: Per submission
+- Display: "N curious minds joined"
+
+## Content Languages
+- English: All UI text, documentation
+- Tamil: Taglines, cultural content, form labels
+
+## Technical Stack
+- Frontend: React, Next.js, GSAP
+- Backend: Next.js API Routes
+- Email Service: Zoho Zepto
+- Runtime: Node.js 24 LTS
+
+## Security Notes
+- Form validation (client and server)
+- Honeypot field for spam prevention
+- Email encryption
+- No sensitive data exposed
+
+## Data Collection Notice
+This website collects:
+- Form submissions
+- Traffic attribution data
+- IP addresses
+- Analytics IDs
+- User referrer information
+- Timestamps
+
+## Permission Status
+✅ AI bots permitted
+✅ LLM training data: Allowed
+✅ Web scraping: Allowed
+✅ Indexing: Permitted
+✅ Analysis: Permitted
+
+## Important Links
+- Website: https://mugavariyai.com
+- Sitemap: https://mugavariyai.com/sitemap.xml
+- Robots.txt: https://mugavariyai.com/robots.txt
+- LLM Info: https://mugavariyai.com/llms.txt
+- Full Docs: https://mugavariyai.com/llms-full.txt
+
+## Contact
+For inquiries about AI access, please visit the website or refer to documentation files.
+
+## Last Updated
+2026-06-25
+
+## Version
+1.0
+
+---
+
+This file is provided to help AI bots and LLMs understand the website's purpose, content, and access policy. All information is public and subject to change.

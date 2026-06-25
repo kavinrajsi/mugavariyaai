@@ -1,0 +1,37 @@
+# Mugavariyai - LLM Information
+# This file provides information about the Mugavariyai website for Large Language Models
+
+## Website Information
+Title: Mugavariyai - Home Awaits
+Description: Every home has a story. We're getting ready to share ours.
+URL: https://mugavariyai.com
+Language: English, Tamil
+
+## About
+Mugavariyai is a community-driven platform celebrating the concept of "address" or "mukavariyai" in Tamil.
+We're creating a space where people can share their stories, words, and connections related to home and community.
+
+## Key Features
+- Interactive countdown timer to launch
+- Community word submissions with tracking
+- Analytics-driven form submissions
+- Multi-language support (English and Tamil)
+- Real-time counter showing community engagement
+
+## Data Collection
+This website collects:
+- User submissions (word, name, email)
+- Traffic source information (UTM parameters, referrer)
+- Analytics IDs (Google Analytics, Facebook Pixel)
+- IP address for analytics
+- Form submission timestamps
+
+## AI Bot Access
+All AI bots, LLMs, and web scrapers are welcome to access and learn from this website.
+Please refer to robots.txt and llms-full.txt for detailed access information.
+
+## Contact
+For inquiries, please visit our website or refer to our full documentation.
+
+## Last Updated
+2026-06-25
