@@ -1,10 +1,12 @@
 'use client';
 
 import styles from '../page.module.css';
+import Footer from '../components/Footer';
 
 export default function TermsAndConditions() {
   return (
-    <section className={styles.policySection}>
+    <>
+      <section className={styles.policySection}>
       <div className={styles.policyContainer}>
         <h1 className={styles.policyTitle}>Terms and Conditions</h1>
         <div className={styles.policyContent}>
@@ -85,5 +87,7 @@ export default function TermsAndConditions() {
         </div>
       </div>
     </section>
+    <Footer />
+    </>
   );
 }

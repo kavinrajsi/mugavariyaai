@@ -1,10 +1,12 @@
 'use client';
 
 import styles from '../page.module.css';
+import Footer from '../components/Footer';
 
 export default function CookiePolicy() {
   return (
-    <section className={styles.policySection}>
+    <>
+      <section className={styles.policySection}>
       <div className={styles.policyContainer}>
         <h1 className={styles.policyTitle}>Cookie Policy</h1>
         <div className={styles.policyContent}>
@@ -103,5 +105,7 @@ export default function CookiePolicy() {
         </div>
       </div>
     </section>
+    <Footer />
+    </>
   );
 }
