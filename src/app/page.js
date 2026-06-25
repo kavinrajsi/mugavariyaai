@@ -353,8 +353,20 @@ function SignupForm({ onSuccess }) {
     );
   }
 
+  const handleInvalidField = (e) => {
+    e.preventDefault();
+    const field = e.target.name;
+    if (field === 'word' && errors.word) {
+      e.target.focus();
+    } else if (field === 'name' && errors.name) {
+      e.target.focus();
+    } else if (field === 'email' && errors.email) {
+      e.target.focus();
+    }
+  };
+
   return (
-    <form className={styles.formContainer} onSubmit={handleSubmit}>
+    <form className={styles.formContainer} onSubmit={handleSubmit} noValidate>
       <h2 className={styles.formTitle}>வீடுன்னா என்ன?</h2>
       {errors.submit && <div className={styles.errorAlert}>{errors.submit}</div>}
       <input
@@ -373,9 +385,11 @@ function SignupForm({ onSuccess }) {
           <input
             className={`${styles.input} ${errors.word ? styles.inputError : ''}`}
             type="text"
+            name="word"
             placeholder="e.g., நிம்மதி, அன்பு, கனவு"
             value={word}
             onChange={(e) => handleFieldChange('word', e.target.value)}
+            onInvalid={handleInvalidField}
             aria-invalid={!!errors.word}
             required
             minLength={2}
@@ -390,9 +404,11 @@ function SignupForm({ onSuccess }) {
           <input
             className={`${styles.input} ${errors.name ? styles.inputError : ''}`}
             type="text"
+            name="name"
             placeholder="Name"
             value={name}
             onChange={(e) => handleFieldChange('name', e.target.value)}
+            onInvalid={handleInvalidField}
             aria-invalid={!!errors.name}
             required
             minLength={4}
@@ -407,9 +423,11 @@ function SignupForm({ onSuccess }) {
           <input
             className={`${styles.input} ${errors.email ? styles.inputError : ''}`}
             type="email"
+            name="email"
             placeholder="your@email.com"
             value={email}
             onChange={(e) => handleFieldChange('email', e.target.value)}
+            onInvalid={handleInvalidField}
             aria-invalid={!!errors.email}
             required
             maxLength={100}
