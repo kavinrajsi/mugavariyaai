@@ -27,7 +27,7 @@ function TaglineRotator() {
       const typeText = (index) => {
         const tagline = TAGLINES[index];
         const words = tagline.split(' ');
-        el.innerHTML = words.map(w => `<span class="${styles.taglineWord}">${w}</span>`).join(' ');
+        el.innerHTML = `<h1 class="${styles.tagline}">${words.map(w => `<span class="${styles.taglineWord}">${w}</span>`).join(' ')}</h1>`;
         const spans = el.querySelectorAll('span');
 
         if (prefersReduced) {

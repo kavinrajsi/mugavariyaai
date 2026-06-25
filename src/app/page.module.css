@@ -27,11 +27,12 @@
   line-height: var(--leading-tight);
   position: absolute;
   will-change: transform, opacity;
+  margin: 0;
 }
 
 .taglineWord {
   display: inline-block;
-  padding: 0 8px;
+  padding: 0 4px;
 }
 
 .subtitle {
@@ -64,7 +65,7 @@
 }
 
 .ctaScroll:hover {
-  background: #d4a535;
+  background: var(--gold-hover);
   transform: translateY(-2px);
 }
 
@@ -211,14 +212,14 @@
 }
 
 .input::placeholder {
-  color: rgba(245, 230, 200, 0.4);
+  color: var(--jasmine-muted);
 }
 
 .input:focus {
   outline: none;
-  background: rgba(245, 230, 200, 0.12);
-  border-color: var(--violet);
-  box-shadow: 0 0 0 3px rgba(123, 79, 158, 0.1);
+  background: var(--jasmine-dim);
+  border-color: var(--moss);
+  box-shadow: 0 0 0 3px var(--moss-glow);
 }
 
 .submitBtn {
@@ -241,7 +242,7 @@
 }
 
 .submitBtn:hover {
-  background: #d4a535;
+  background: var(--gold-hover);
   transform: translateY(-2px);
 }
 
