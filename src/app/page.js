@@ -107,6 +107,7 @@ function CountdownTimer() {
       <div className={styles.countdown}>
         {pad(time.days)} : {pad(time.hours)} : {pad(time.minutes)} : {pad(time.seconds)}
       </div>
+      <p className={styles.countdownLabel}>Until the doors open</p>
     </div>
   );
 }
