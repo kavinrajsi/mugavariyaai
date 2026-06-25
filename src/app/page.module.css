@@ -33,6 +33,10 @@
   display: inline-block;
 }
 
+.taglineChar {
+  display: inline;
+}
+
 .subtitle {
   font-family: var(--font-cormorant);
   font-size: clamp(1.2rem, 4vw, 2rem);

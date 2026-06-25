@@ -24,31 +24,41 @@ function TaglineRotator() {
     if (!el) return;
 
     const ctx = gsap.context(() => {
-      const show = (index) => {
+      const typeText = (index) => {
         const tagline = TAGLINES[index];
-        const words = tagline.split(' ');
-        el.innerHTML = words.map(w => `<span class="${styles.taglineWord}">${w}</span>`).join(' ');
+        const chars = tagline.split('');
+        el.innerHTML = chars.map(c => `<span class="${styles.taglineChar}">${c}</span>`).join('');
         const spans = el.querySelectorAll('span');
 
-        if (prefersReduced) return;
+        if (prefersReduced) {
+          spans.forEach(s => s.style.opacity = '1');
+          return;
+        }
+
         gsap.fromTo(spans,
-          { opacity: 0, y: 18 },
-          { opacity: 1, y: 0, stagger: 0.07, duration: 0.45, ease: 'power3.out' }
+          { opacity: 0 },
+          { opacity: 1, stagger: 0.03, duration: 0.1, ease: 'none' }
         );
       };
 
-      show(0);
+      typeText(0);
 
       const interval = setInterval(() => {
         const spans = el.querySelectorAll('span');
+        if (prefersReduced) {
+          indexRef.current = (indexRef.current + 1) % TAGLINES.length;
+          typeText(indexRef.current);
+          return;
+        }
+
         gsap.to(spans, {
-          opacity: 0, y: -18, stagger: 0.05, duration: 0.35, ease: 'power2.in',
+          opacity: 0, stagger: 0.02, duration: 0.08, ease: 'none',
           onComplete: () => {
             indexRef.current = (indexRef.current + 1) % TAGLINES.length;
-            show(indexRef.current);
+            typeText(indexRef.current);
           }
         });
-      }, 3200);
+      }, 4000);
 
       return () => clearInterval(interval);
     }, containerRef);
