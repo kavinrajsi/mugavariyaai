@@ -126,7 +126,7 @@ export async function POST(request) {
     const senderEmail = process.env.SENDER_EMAIL;
     const senderName = process.env.SENDER_NAME || 'Visvas';
     const bccEmails = process.env.BCC_EMAILS?.split(',').map(e => e.trim()) || [];
-    const emailSubject = process.env.EMAIL_SUBJECT || 'process.env.EMAIL_SUBJECT';
+    const emailSubject = process.env.EMAIL_SUBJECT || '[mugavariyai.com] New form submission';
 
     if (!apiKey || !senderEmail || bccEmails.length === 0) {
       console.error('Missing required environment variables:', {
