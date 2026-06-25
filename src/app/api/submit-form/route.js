@@ -1,6 +1,26 @@
+import { promises as fs } from 'fs';
+import path from 'path';
+
+const COUNTER_FILE = path.join(process.cwd(), 'submission_counter.json');
+
+async function getAndIncrementCounter() {
+  try {
+    const data = await fs.readFile(COUNTER_FILE, 'utf-8');
+    const counter = JSON.parse(data);
+    counter.count += 1;
+    await fs.writeFile(COUNTER_FILE, JSON.stringify(counter, null, 2));
+    return counter.count;
+  } catch (error) {
+    const initialCount = { count: 101 };
+    await fs.writeFile(COUNTER_FILE, JSON.stringify(initialCount, null, 2));
+    return 101;
+  }
+}
+
 export async function POST(request) {
   try {
     const formData = await request.json();
+    const submissionCount = await getAndIncrementCounter();
     const {
       word,
       name,
@@ -23,6 +43,7 @@ export async function POST(request) {
 
     // Log all form data to console
     console.log('=== FORM SUBMISSION ===');
+    console.log('Submission #:', submissionCount);
     console.log('Timestamp:', timestamp || new Date().toISOString());
     console.log('--- User Info ---');
     console.log('Word:', word);
@@ -161,7 +182,7 @@ export async function POST(request) {
       throw new Error('Failed to send admin notification email');
     }
 
-    return Response.json({ success: true }, { status: 200 });
+    return Response.json({ success: true, submission_count: submissionCount }, { status: 200 });
   } catch (error) {
     console.error('Form submission error:', error);
     return Response.json({ error: 'Failed to process submission' }, { status: 500 });

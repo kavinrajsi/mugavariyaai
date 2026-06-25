@@ -120,6 +120,7 @@ function SignupForm({ onSuccess }) {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [honeypot, setHoneypot] = useState('');
+  const [submissionCount, setSubmissionCount] = useState(0);
 
   const validateWord = (value) => {
     if (!value.trim()) return 'Required';
@@ -315,6 +316,8 @@ function SignupForm({ onSuccess }) {
       });
 
       if (response.ok) {
+        const data = await response.json();
+        setSubmissionCount(data.submission_count || 101);
         setState('success');
         onSuccess(word);
       } else {
@@ -334,6 +337,9 @@ function SignupForm({ onSuccess }) {
         <h2 className={styles.successHeading}>உங்கள் வார்த்தை பதிவாகிவிட்டது</h2>
         <p className={styles.successSubtitle}>
           Your word has been noted. We'll open the door soon.
+        </p>
+        <p className={styles.successCount}>
+          {submissionCount} curious minds joined
         </p>
       </div>
     );

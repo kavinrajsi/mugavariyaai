@@ -304,6 +304,15 @@
   font-weight: var(--weight-regular);
 }
 
+.successCount {
+  font-family: var(--font-raleway);
+  font-size: var(--text-base);
+  color: var(--moss);
+  margin-top: 24px;
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-normal);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .hero {
