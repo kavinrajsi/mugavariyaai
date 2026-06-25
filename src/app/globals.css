@@ -91,6 +91,7 @@ table {
 
   /* Color modifiers */
   --gold-hover: #C8891F;
+  --moss-hover: #15442a;
   --jasmine-muted: rgba(245, 230, 200, 0.4);
   --jasmine-dim: rgba(245, 230, 200, 0.12);
   --moss-glow: rgba(30, 95, 47, 0.15);
