@@ -91,8 +91,7 @@ function CountdownTimer() {
   const [time, setTime] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
   useEffect(() => {
-    const target = new Date();
-    target.setDate(target.getDate() + 90);
+    const target = new Date(2026, 6, 4); // July 4th, 2026
 
     const tick = () => {
       const now = new Date();
@@ -119,7 +118,6 @@ function CountdownTimer() {
       <div className={styles.countdown}>
         {pad(time.days)} : {pad(time.hours)} : {pad(time.minutes)} : {pad(time.seconds)}
       </div>
-      <div className={styles.countdownLabel}>UNTIL THE DOORS OPEN</div>
     </div>
   );
 }
