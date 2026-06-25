@@ -154,7 +154,7 @@ export async function POST(request) {
           },
         ],
         subject: 'process.env.EMAIL_SUBJECT',
-        htmlbody: `<p>Hi ${name},</p><p>We received your answer: <strong>${word}</strong></p><p>Thank you for joining our journey.</p>`,
+        htmlbody: `<p>Hi ${escapeHtml(name)},</p><p>We received your answer: <strong>${escapeHtml(word)}</strong></p><p>Thank you for joining our journey.</p>`,
       }),
     });
 
