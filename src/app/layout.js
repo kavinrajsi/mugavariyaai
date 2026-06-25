@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono, Noto_Serif_Tamil, Noto_Sans_Tamil, Cormorant_Garamond } from "next/font/google";
+import { Geist, Geist_Mono, Arima, Cormorant_Garamond } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
@@ -12,7 +12,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const notoSansTamil = Noto_Sans_Tamil({
+const arima = Arima({
   variable: "--font-noto-tamil",
   subsets: ["tamil"],
   weight: ["400", "600", "700"],
@@ -33,7 +33,7 @@ export default function RootLayout({ children }) {
   const GTM_ID = "GTM-WFT3JSDX";
 
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${notoSansTamil.variable} ${cormorantGaramond.variable}`}>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${arima.variable} ${cormorantGaramond.variable}`}>
       <head>
         {/* Google Tag Manager */}
         <Script
