@@ -80,6 +80,7 @@ function TaglineRotator() {
 
 function CountdownTimer() {
   const [time, setTime] = useState(null);
+  const [joinedCount, setJoinedCount] = useState(0);
 
   useEffect(() => {
     const target = new Date(2026, 6, 4); // July 4th, 2026
@@ -100,6 +101,22 @@ function CountdownTimer() {
     tick();
     const interval = setInterval(tick, 1000);
     return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const fetchCount = async () => {
+      try {
+        const response = await fetch('/api/submission-count');
+        if (response.ok) {
+          const data = await response.json();
+          setJoinedCount(data.submission_count ?? 0);
+        }
+      } catch (error) {
+        console.error('Error fetching submission count:', error);
+      }
+    };
+
+    fetchCount();
   }, []);
 
   const pad = (num) => String(num).padStart(2, '0');
@@ -123,6 +140,9 @@ function CountdownTimer() {
         </div>
       </div>
       <p className={styles.countdownLabel}>Until the doors open</p>
+      {joinedCount > 0 && (
+        <p className={styles.countdownJoinedCount}>{joinedCount} curious minds joined</p>
+      )}
     </div>
   );
 }
@@ -463,7 +483,6 @@ function SignupForm() {
 }
 
 export default function Home() {
-
   return (
     <section className={styles.hero}>
       <div className={styles.container}>
